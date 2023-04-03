@@ -1,5 +1,5 @@
 using System.Reflection;
-using Blunderr.Core.Data;
+using Blunderr.Core.Data.Persistence;
 using Blunderr.Core.Services.PasswordService;
 using Blunderr.Core.Services.TokenService;
 using Microsoft.EntityFrameworkCore;

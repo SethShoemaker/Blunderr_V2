@@ -3,7 +3,7 @@ using Blunderr.Core.Data.Entities.Tickets;
 using Blunderr.Core.Data.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blunderr.Core.Data
+namespace Blunderr.Core.Data.Persistence
 {
     public class AppDbContext : DbContext
     {
@@ -23,6 +23,8 @@ namespace Blunderr.Core.Data
 
             modelBuilder.Entity<Ticket>().HasOne(t => t.Developer);
             modelBuilder.Entity<Ticket>().HasOne(t => t.Submitter);
+
+            this.Seed(modelBuilder);
         }
     }
 }
