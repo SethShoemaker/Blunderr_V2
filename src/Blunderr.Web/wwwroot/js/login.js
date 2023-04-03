@@ -23,5 +23,3 @@ document.querySelector("li#manager").addEventListener("click", function () {
     PASSWORD_INPUT.value = "Manager1";
     togglePopup(POPUP_DEMO_ACCOUNTS_ID);
 });
-
-togglePopup(POPUP_DEMO_ACCOUNTS_ID);
