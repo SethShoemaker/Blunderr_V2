@@ -1,6 +1,6 @@
 namespace Blunderr.Core.Data.Entities.Tickets
 {
-    public class TicketCommentAttachment
+    public class TicketCommentAttachment : Entity
     {
         public string FileName { get; set; } = null!;
 
