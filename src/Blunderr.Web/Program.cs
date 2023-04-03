@@ -1,7 +1,16 @@
+using Blunderr.Web.Authentication;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddCoreDependencies(
+    builder.Configuration.GetConnectionString("App"), 
+    builder.Environment.IsDevelopment());
+
+builder.Services.AddAuthentication(TokenAuthenticationSchemeOptions.Name)
+    .AddScheme<TokenAuthenticationSchemeOptions, TokenAuthenticationHandler>(TokenAuthenticationSchemeOptions.Name, option => {});
 
 var app = builder.Build();
 
@@ -15,6 +24,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 
 app.UseRouting();
 

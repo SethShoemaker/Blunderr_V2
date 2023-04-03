@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.SassCompiler" Version="1.60.0" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blunderr.Core\Blunderr.Core.csproj" />
   </ItemGroup>
 
 </Project>
