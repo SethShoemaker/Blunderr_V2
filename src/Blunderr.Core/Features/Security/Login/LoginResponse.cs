@@ -2,7 +2,7 @@ namespace Blunderr.Core.Features.Security.Login
 {
     public class LoginResponse
     {
-        public List<Error> Errors { get; set; } = null!;
+        public List<Error> Errors { get; set; } = new();
 
         public string token { get; set; } = null!;
 
