@@ -9,8 +9,18 @@ namespace Blunderr.Core.Data
     {
         public DbSet<User> Users { get; set; } = null!;
 
-        DbSet<Project> Projects { get; set; } = null!;
+        public DbSet<UserToken> UserTokens { get; set; } = null!;
 
-        DbSet<Ticket> Tickets { get; set; } = null!;
+        public DbSet<Project> Projects { get; set; } = null!;
+
+        public DbSet<Ticket> Tickets { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserToken>().HasOne(ut => ut.User);
+
+            modelBuilder.Entity<Ticket>().HasOne(t => t.Developer);
+            modelBuilder.Entity<Ticket>().HasOne(t => t.Submitter);
+        }
     }
 }
