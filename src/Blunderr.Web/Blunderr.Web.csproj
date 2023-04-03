@@ -9,10 +9,18 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.SassCompiler" Version="1.60.0" />
     <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Blunderr.Core\Blunderr.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Watch Include="**\*.scss"/>
   </ItemGroup>
 
 </Project>

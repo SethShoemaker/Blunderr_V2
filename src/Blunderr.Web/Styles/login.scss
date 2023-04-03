@@ -1,0 +1,174 @@
+@import "./Shared/_variables.scss";
+
+body{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $navyBlue;
+}
+
+img#logo{
+    position: absolute;
+    top: calc(0.5rem + 2vw);
+    left: calc(0.5rem + 1.8vw);
+    height: min(calc(1.75rem + 4vw), calc(2rem + 1vw));
+}
+
+form{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    height: min(20rem + 40vw, 28rem + 7vw);
+    width: min(2rem + 80vw, 27rem + 5vw);
+    border-radius: calc(0.4rem + 0.7vw);
+    background-color: $darkNavyBlue;
+    color: $lightGrey;
+
+    div#container{
+        height: min(18rem + 35vw, 19rem + 12vw);
+        width: min(2rem + 68vw, 20rem + 5vw);
+
+        h1{
+            user-select: none;
+            font-weight: 600;
+            font-size: min(1rem + 4vw, 2rem + 0.5vw);
+            letter-spacing: min(0.01rem + 0.04vw, 0.07rem + 0.03vw);
+            margin: min(0.3rem + 3vw, -1.85rem + 3.7vw) 0 min(0.5rem + 4vw, 2.1rem + 0.5vw) 0;
+        }
+
+        div#inputs-container{
+            margin: 0 auto;
+            width: min(2rem + 63vw, 18.5rem + 4.5vw);
+
+            div.input{
+                margin-bottom: min(0.9rem + 3.9vw, 2.8rem + 0.4vw);
+
+                label{
+                    display: block;
+                    font-weight: 300;
+                    font-size: min(0.3rem + 2vw, 0.85rem + 0.015vw);
+                    letter-spacing: min(0.01rem + 0.025vw, 0.05rem + 0.025vw); 
+                    padding-left: calc(0.05rem + 0.02vw);
+                }
+
+                input{
+                    background: none;
+                    border-style: none none solid none;
+                    border-width: calc(0.08rem + 0.04vw);
+                    border-color: $offWhite;
+                    font-size: min(0.4rem + 2.15vw, 0.95rem + 0.02vw);
+                    letter-spacing: min(0.01rem + 0.025vw, 0.045rem + 0.025vw);
+                    font-weight: 200;
+                    width: 100%;
+                    padding: min(0.3rem + 1.4vw, 0.6rem + 0.15vw) calc(0.2rem + 0.1vw) calc(0.1rem + 0.2vw) calc(0.2rem + 0.1vw);
+                    color: $offWhite;
+
+                    &:focus{
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        input[type="submit"]{
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            width: min(2rem + 60vw, 17rem + 4.3vw);
+            padding: min(0.3rem + 1.5vw, 0.6rem + 0.15vw);
+            background-color: $babyBlue;
+            border: none;
+            color: $white;
+            font-size: min(0.4rem + 2.15vw, 1rem + 0.02vw);
+            letter-spacing: min(0.01rem + 0.025vw, 0.045rem + 0.025vw);
+            font-weight: 500;
+            border-radius: calc(0.1rem + 0.3vw);
+        }
+
+        div#links{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: min(0.5rem + 4vw, 1.7rem + 0.7vw);
+
+            span{
+                user-select: none;
+                cursor: default;
+                margin-bottom: min(0.3rem + 3.5vw, 1rem + 0.25vw);
+                font-size: min(0.4rem + 1.5vw, 0.85rem + 0.03vw);
+                letter-spacing: min(0.011rem + 0.03vw, 0.05rem + 0.03vw);
+                font-weight: 300;
+
+                a{
+                    cursor: pointer;
+                    color: inherit;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+div#popup-demo-accounts{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: $darkNavyBlue;
+    padding: min(0.5rem + 10vh, 2.6rem + 1.5vh) min(0.5rem + 10vh, 2.7rem + 1.5vh);
+    border-radius: calc(0.5rem + 0.8vw);
+
+    ul{
+        background-color: $darkNavyBlue;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        @media (min-width:800px) {
+            width: calc(30rem + 4vw);
+        }
+        @media (max-width:800px) {
+            width: calc(8rem + 32vw);
+        }
+        @media (max-width:400px) {
+            width: calc(0.6rem + 30vw);
+        }
+    
+        li{
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: min(1rem + 20vw, 4rem + 2.1vw);
+            margin: min(0.7rem + 13vw, 1.5rem + 0.5vw) 0;
+            @media (min-width:800px) {
+                width: calc(8rem + 2vw);
+            }
+            @media (max-width:800px) {
+                width: calc(4rem + 16vw);
+            }
+            @media (max-width:400px) {
+                width: calc(0.5rem + 55vw);
+            }
+
+            img{
+                height: min(1rem + 4vw, 2.1rem + 1vw);
+                margin-bottom: calc(0.6rem + 0.2vw);
+            }
+
+            span{
+                color: $offWhite;
+                font-weight: 300;
+                letter-spacing: min(0.011rem + 0.05vw, 0.12rem + 0.03vw);
+                font-size: min(0.4rem + 4vw, 0.9rem + 0.2vw);
+            }
+        }
+    }
+}

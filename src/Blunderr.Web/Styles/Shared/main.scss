@@ -1,0 +1,46 @@
+@import './_variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import './_nav.scss';
+@import './_popup.scss';
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body{
+    background-color: $navyBlue;
+}
+
+main{
+    overflow: hidden;
+
+    div#dashboard-content{
+        position: absolute;
+        top: $headerHeight;
+        transition-property: left;
+        transition-duration: $sidebarCollapseSpeed;
+        padding: calc(0.5rem + 2vw) calc(0.4rem + 2.6vw);
+        overflow-x: scroll;
+    
+        &[data-sidebar-hidden="false"]{
+            width: calc(100vw - $sidebarWidth);
+            left: $sidebarWidth;
+        }
+    
+        &[data-sidebar-hidden="true"]{
+            left: 0;
+            width: 100vw;
+        }
+    
+        h1{
+            font-weight: 600;
+            font-size: min(0.2rem + 12vw, 2.3rem + 0.3vw);
+            letter-spacing: calc(0.01rem + 0.03vw);
+            margin-bottom: calc(2rem + 0.5vw);
+            color: $offWhite;
+        }
+    }
+}

@@ -1,0 +1,54 @@
+@page
+@model Blunderr.Web.Pages.Login
+@{
+    ViewData["hasNav"] = "false";
+    ViewData["Title"] = "Login";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/login.css">
+}
+
+<img src="~/images/Logo-White.svg" alt="Lorem Ipsum Inc." draggable="false" id="logo">
+
+<form method="post">
+    <div id="container">
+        <h1>Login</h1>
+        <div id="inputs-container">
+            <div class="input">
+                <label for="email">Email</label>
+                <input type="email" asp-for="Email" id="email" required />
+            </div>
+            <div class="input">
+                <label for="password">Password</label>
+                <input type="password" asp-for="Password" id="password" required />
+            </div>
+        </div>
+        <input type="submit" value="Login">
+        <div id="links">
+            <span>Request a <a href="#">Password Reset</a></span>
+            <span>Select a <a id="demo-btn">Demo Account</a></span>
+        </div>
+    </div>
+</form>
+
+<div class="popup-inactive popup-centered" id="popup-demo-accounts">
+    <ul>
+        <li id="client" aria-label="client">
+            <img src="~/images/icons/user.svg" alt="">
+            <span>Client</span>
+        </li>
+        <li id="dev" aria-label="developer">
+            <img src="~/images/icons/user.svg" alt="">
+            <span>Developer</span>
+        </li>
+        <li id="manager" aria-label="Manager">
+            <img src="~/images/icons/user.svg" alt="">
+            <span>Manager</span>
+        </li>
+    </ul>
+</div>
+
+@section Scripts{
+    <script src="~/js/login.js"></script>
+}

@@ -1,0 +1,60 @@
+@import './variables.scss';
+
+div#popup-backdrop{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba($color: $navyBlue, $alpha: 0.7);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    &.backdrop-clear{
+        background-color: rgba($color: $navyBlue, $alpha: 0.0);
+    }
+}
+
+.popup-inactive{
+    display: none !important;
+}
+
+.popup-active{
+    z-index: 2;
+
+    &.popup-centered{
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+img.more-button{
+    cursor: pointer;
+    width: calc(0.8rem + 0.2vw);
+}
+
+div.more-menu{
+    position: absolute;
+    background-color: $darkNavyBlue;
+    border: calc(0.02rem) solid $mediumGrey;
+    border-radius: calc(0.3rem + 0.12vw);
+    line-height: normal;
+    overflow: hidden;
+    transform: translateY(3rem);
+
+    a{
+        display: block;
+        width: calc(6.5rem + 1.25vw);
+        text-align: center;
+        font-weight: 500;
+        color: $offWhite;
+        text-decoration: none;
+        padding: calc(0.7rem + 0.07vw) 0;
+
+        &:not(:first-of-type){
+            border-top: calc(0.014rem) solid $mediumGrey;
+        }
+    }
+}

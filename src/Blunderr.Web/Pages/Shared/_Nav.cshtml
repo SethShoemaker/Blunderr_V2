@@ -1,0 +1,52 @@
+@using Blunderr.Core.Data.Entities.Users
+@{
+    string? PageName = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<nav id="nav">
+    <header>
+        <div id="left">
+            <button id="sidebar-toggle" aria-label="menu button">
+                <img src="~/images/icons/menu.svg" alt draggable="false">
+            </button>
+            <img src="~/images/Logo-White.svg" id="logo" draggable="false">
+        </div>
+        <div id="right">
+            <button aria-label="logout">
+                @User.Name()
+                <img src="~/images/icons/dropdown.svg" alt draggable="false">
+            </button>
+        </div>
+    </header>
+    <div id="sidebar" data-hidden="false">
+        <ul>
+            <a asp-page="/Dashboard/Index" data-route="/Dashboard" aria-role="listitem">
+                <div class="icon-container">
+                    <img src="~/images/icons/dashboard.svg" alt> 
+                </div>
+                <span>Dashboard</span>
+            </a>
+            <a asp-page="/Tickets/Index" data-route="/Tickets" aria-role="listitem">
+                <div class="icon-container">
+                    <img src="~/images/icons/tickets.svg" alt>
+                </div>
+                <span>Tickets</span>
+            </a>
+            <a asp-page="/Projects/Index" data-route="/Projects" aria-role="listitem">
+                <div class="icon-container">
+                    <img src="~/images/icons/projects.svg" alt>
+                </div>
+                <span>Projects</span>
+            </a>
+            @if (User.Role() != UserRole.Client)
+            {
+                <a asp-page="/Users/Index" data-route="/Users" aria-role="listitem">
+                    <div class="icon-container">
+                        <img src="~/images/icons/user.svg" alt>
+                    </div>
+                    <span>Users</span>
+                </a>
+            }
+        </ul>
+    </div>
+</nav>
