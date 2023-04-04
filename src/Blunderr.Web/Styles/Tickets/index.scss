@@ -1,0 +1,75 @@
+@import '../Shared/_variables.scss';
+
+table.dashboard-table{
+    thead tr,
+    tbody tr{
+        @media (max-width:1300px) {
+            grid-template-columns: 
+                calc(2.2rem + 3vw) // id
+                calc(9.5rem + 4.5vw) // submitter
+                calc(9.5rem + 4.5vw) // project
+                calc(9.5rem + 4.5vw) // developer
+                calc(8rem + 4vw) // priority
+                calc(8rem + 4vw) // status
+                calc(5.5rem + 3vw) // created
+                1fr // button
+            ;
+        }
+
+        @media (min-width:1300px) {
+            grid-template-columns: 
+                7% // id
+                17% // submitter
+                17% // project
+                17% // developer
+                15% // priority
+                15% // status
+                7% // created
+                5% // button
+            ;
+        }
+
+        td.bubble{
+            padding-left: 0;
+            display: flex;
+            align-items: center;
+
+
+            span{
+                display: block;
+                width: calc(6.3rem + 0.63vw);
+                height: calc(1.8rem + 0.4vw);
+                line-height: calc(1.8rem + 0.4vw);
+                border-radius: calc(1.4rem - 0.14vw);
+                font-size: calc(0.66rem + 0.15vw);
+                letter-spacing: calc(0.033rem + 0.015vw);
+                font-weight: 600;
+                text-align: center;
+
+                $bubbleBackgroundOpacity: 0.04;
+
+                &.priority-Low,
+                &.status-Resolved{
+                    background-color: rgba($color: $green, $alpha: $bubbleBackgroundOpacity);
+                    color: $green;
+                }
+
+                &.priority-Medium{
+                    background-color: rgba($color: $yellow, $alpha: $bubbleBackgroundOpacity);
+                    color: $yellow;
+                }
+
+                &.priority-High,
+                &.status-Pending{
+                    background-color: rgba($color: $red, $alpha: $bubbleBackgroundOpacity);
+                    color: $red;
+                }
+
+                &.status-Open{
+                    background-color: rgba($color: $babyBlue, $alpha: $bubbleBackgroundOpacity);
+                    color: $babyBlue;
+                }
+            }
+        }
+    }
+}

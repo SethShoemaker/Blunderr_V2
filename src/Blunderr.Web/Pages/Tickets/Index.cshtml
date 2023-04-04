@@ -1,0 +1,127 @@
+@page
+@using Blunderr.Core.Features.Tickets.TicketList
+@model Blunderr.Web.Pages.Tickets.Index
+@{
+    ViewData["Title"] = "Tickets";
+
+    TicketListResponse D = Model.Data;
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/Tickets/index.css">
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="dashboard-table-header">
+    <div class="filters">
+        <div class="link-filters">
+            <a class="status-link" role="link">All</a>
+            <a class="status-link" data-status="Pending" role="link">Pending</a>
+            <a class="status-link" data-status="Open" role="link">Open</a>
+            <a class="status-link" data-status="Resolved" role="link">Resolved</a>
+        </div>
+        <div class="select-filters">
+            <select id="client-filter">
+                <option value="">All Submitters</option>
+                @foreach (var submitter in D.Submitters)
+                {
+                    <option value="@submitter.Id">@submitter.Name</option>
+                }
+            </select>
+            <select id="project-filter">
+                <option value="">All Projects</option>
+                @foreach (var project in D.Projects)
+                {
+                    <option value="@project.Id">@project.Name</option>
+                }
+            </select>
+            <select id="developer-filter">
+                <option value="">All Developers</option>
+                @foreach (var developer in D.Developers)
+                {
+                    <option value="@developer.Id">@developer.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="create-container">
+        @if(D.CanManageTickets)
+        {
+            <a asp-page="/Tickets/Create"><span>Create Ticket</span></a>
+        }
+    </div>
+</div>
+<table class="dashboard-table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Submitter</th>
+            <th>Project</th>
+            <th>Developer</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (D.Page.TotalCount is not 0)
+        {
+            @foreach (var ticket in D.Page.Items)
+            {
+                <tr>
+                    <td>@ticket.Id</td>
+                    <td>@ticket.Submitter.Name</td>
+                    <td>@ticket.Project.Name</td>
+                    <td>@ticket.Developer?.Name</td>
+                    <td class="bubble"><span class="priority-@ticket.Priority">@ticket.Priority</span></td>
+                    <td class="bubble"><span class="status-@ticket.Status">@ticket.Status</span></td>
+                    <td>@ticket.Created.ToString("MMM dd")</td>
+                    <td class="more-container">
+                        <img src="~/images/icons/more.svg" alt="more" class="more-button">
+                        <div class="more-menu popup-inactive" id="popup-menu-@ticket.Id">
+                            <a asp-page="/Tickets/Show" asp-route-TicketId=@ticket.Id>View</a>
+                            @if(D.CanManageTickets)
+                            {
+                                <a asp-page="/Tickets/Edit" asp-route-TicketId=@ticket.Id>Edit</a>
+                                <a asp-page="/Tickets/Delete" asp-route-TicketId=@ticket.Id>Delete</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td></td>
+                <td>No Results</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if(D.Page.TotalCount is not 0)
+{
+    <nav class="pagination">
+        <div class="pagination-left">
+            <span>Showing @D.Page.StartPosition - @D.Page.EndPosition of @D.Page.TotalCount</span>
+        </div>
+        <div class="pagination-right">
+            @if(D.Page.HasPrevPage)
+            {
+                <a id="pagination-prev" role="link"><img src="~/images/icons/prev.svg" alt="Previous"></a>
+            }
+            <span>Page @Model.PageNumber</span>
+            @if(D.Page.HasNextPage)
+            {
+                <a id="pagination-next" role="link"><img src="~/images/icons/next.svg" alt="Next"></a>
+            }
+        </div>
+    </nav>
+}
+
+@section Scripts
+{
+    <script src="~/js/Tickets/index.js"></script>
+}
