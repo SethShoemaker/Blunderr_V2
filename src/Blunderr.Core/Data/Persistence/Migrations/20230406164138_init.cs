@@ -16,6 +16,21 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "FileItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FilePath = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileItem", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -130,13 +145,18 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FileName = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FileItemId = table.Column<int>(type: "int", nullable: false),
                     TicketId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TicketAttachment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketAttachment_FileItem_FileItemId",
+                        column: x => x.FileItemId,
+                        principalTable: "FileItem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TicketAttachment_Tickets_TicketId",
                         column: x => x.TicketId,
@@ -181,13 +201,18 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FileName = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FileItemId = table.Column<int>(type: "int", nullable: false),
                     TicketCommentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TicketCommentAttachment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketCommentAttachment_FileItem_FileItemId",
+                        column: x => x.FileItemId,
+                        principalTable: "FileItem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TicketCommentAttachment_TicketComment_TicketCommentId",
                         column: x => x.TicketCommentId,
@@ -203,6 +228,11 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TicketAttachment_FileItemId",
+                table: "TicketAttachment",
+                column: "FileItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TicketAttachment_TicketId",
                 table: "TicketAttachment",
                 column: "TicketId");
@@ -216,6 +246,11 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 name: "IX_TicketComment_TicketId",
                 table: "TicketComment",
                 column: "TicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketCommentAttachment_FileItemId",
+                table: "TicketCommentAttachment",
+                column: "FileItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketCommentAttachment_TicketCommentId",
@@ -254,6 +289,9 @@ namespace Blunderr.Core.Data.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "FileItem");
 
             migrationBuilder.DropTable(
                 name: "TicketComment");

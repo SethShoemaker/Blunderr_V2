@@ -1,4 +1,4 @@
-namespace Blunderr.Core.Services.PasswordService
+namespace Blunderr.Core.Data.Security.PasswordService
 {
     public interface IPasswordService
     {

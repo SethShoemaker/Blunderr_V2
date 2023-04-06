@@ -19,6 +19,21 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Blunderr.Core.Data.Entities.FileItems.FileItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileItem");
+                });
+
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Projects.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -46,56 +61,56 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         {
                             Id = 1,
                             ClientId = 1,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(6920),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3730),
                             Name = "Sally's Website"
                         },
                         new
                         {
                             Id = 2,
                             ClientId = 1,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(6970),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3780),
                             Name = "Sally's Mobile App"
                         },
                         new
                         {
                             Id = 3,
                             ClientId = 2,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(6990),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3790),
                             Name = "James' Website"
                         },
                         new
                         {
                             Id = 4,
                             ClientId = 2,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7000),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3790),
                             Name = "James' Mobile App"
                         },
                         new
                         {
                             Id = 5,
                             ClientId = 3,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7010),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3800),
                             Name = "Thomas' Website"
                         },
                         new
                         {
                             Id = 6,
                             ClientId = 3,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7020),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3810),
                             Name = "Thomas' Mobile App"
                         },
                         new
                         {
                             Id = 7,
                             ClientId = 4,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7020),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3810),
                             Name = "Lucas' Website"
                         },
                         new
                         {
                             Id = 8,
                             ClientId = 4,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7030),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3820),
                             Name = "Lucas' Mobile App"
                         });
                 });
@@ -149,7 +164,7 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7040),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3830),
                             Description = "I need help",
                             Priority = 0,
                             ProjectId = 1,
@@ -161,7 +176,7 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7050),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3840),
                             Description = "I need more help",
                             Priority = 1,
                             ProjectId = 1,
@@ -173,7 +188,7 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2023, 4, 3, 14, 30, 56, 911, DateTimeKind.Local).AddTicks(7050),
+                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3850),
                             Description = "Could you build this?",
                             Priority = 0,
                             ProjectId = 1,
@@ -190,14 +205,15 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("FileItemId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TicketId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileItemId");
 
                     b.HasIndex("TicketId");
 
@@ -238,14 +254,15 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("FileItemId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TicketCommentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileItemId");
 
                     b.HasIndex("TicketCommentId");
 
@@ -290,8 +307,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 1,
                             Email = "Sally@Client.com",
                             Name = "Sally Client",
-                            PasswordHash = "��onuϲ�$����t`\r�D",
-                            PasswordSalt = "1803046854",
+                            PasswordHash = "�\"�4K�����f4$�Y�!",
+                            PasswordSalt = "1319448964",
                             Phone = 1234567890,
                             Role = 0
                         },
@@ -300,8 +317,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 2,
                             Email = "James@Client.com",
                             Name = "James Client",
-                            PasswordHash = "���5b�J�<��{�!g�",
-                            PasswordSalt = "401217990",
+                            PasswordHash = "���~�/���O����Ű�ƭ",
+                            PasswordSalt = "1503377391",
                             Phone = 1234567890,
                             Role = 0
                         },
@@ -310,8 +327,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 3,
                             Email = "Thomas@Client.com",
                             Name = "Thomas Client",
-                            PasswordHash = "QfǸ�}�{�f\r�<Q'~��",
-                            PasswordSalt = "66316628",
+                            PasswordHash = "��p3����z�))uIi",
+                            PasswordSalt = "2026339243",
                             Phone = 1234567890,
                             Role = 0
                         },
@@ -320,8 +337,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 4,
                             Email = "Lucas@Client.com",
                             Name = "Lucas Client",
-                            PasswordHash = "���n���|i\r�|�D1�tSH",
-                            PasswordSalt = "264547270",
+                            PasswordHash = "m�ۯ�\"�����~QI�����",
+                            PasswordSalt = "373485992",
                             Phone = 1234567890,
                             Role = 0
                         },
@@ -330,8 +347,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 5,
                             Email = "Jamie@LoremIpsum.com",
                             Name = "Jamie Dev",
-                            PasswordHash = "g(L�Φ�ɝ���SP�ݜ;",
-                            PasswordSalt = "171349475",
+                            PasswordHash = "Ť����С�v��Qw\\",
+                            PasswordSalt = "1456109873",
                             Phone = 1234567890,
                             Role = 1
                         },
@@ -340,8 +357,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 6,
                             Email = "Sam@LoremIpsum.com",
                             Name = "Sam Dev",
-                            PasswordHash = "kdG�gTw@�����AhD",
-                            PasswordSalt = "399332407",
+                            PasswordHash = "/���VZ�%J�]:���dv�k",
+                            PasswordSalt = "231204354",
                             Phone = 1234567890,
                             Role = 1
                         },
@@ -350,8 +367,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 7,
                             Email = "Jonathan@LoremIpsum.com",
                             Name = "Jonathan Manager",
-                            PasswordHash = "�����wlT�~�G�L%�zY�?",
-                            PasswordSalt = "223294836",
+                            PasswordHash = "�I����m��j��",
+                            PasswordSalt = "1908393835",
                             Phone = 1234567890,
                             Role = 2
                         },
@@ -360,8 +377,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                             Id = 8,
                             Email = "Gerald@LoremIpsum.com",
                             Name = "Gerald Manager",
-                            PasswordHash = "T�����b��UӼ�a{�b�",
-                            PasswordSalt = "2124259902",
+                            PasswordHash = "g�����!�wj#��2�?",
+                            PasswordSalt = "1141757280",
                             Phone = 1234567890,
                             Role = 2
                         });
@@ -425,11 +442,19 @@ namespace Blunderr.Core.Data.Persistence.Migrations
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Tickets.TicketAttachment", b =>
                 {
+                    b.HasOne("Blunderr.Core.Data.Entities.FileItems.FileItem", "FileItem")
+                        .WithMany()
+                        .HasForeignKey("FileItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Blunderr.Core.Data.Entities.Tickets.Ticket", "Ticket")
                         .WithMany("Attachments")
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FileItem");
 
                     b.Navigation("Ticket");
                 });
@@ -451,11 +476,19 @@ namespace Blunderr.Core.Data.Persistence.Migrations
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Tickets.TicketCommentAttachment", b =>
                 {
+                    b.HasOne("Blunderr.Core.Data.Entities.FileItems.FileItem", "FileItem")
+                        .WithMany()
+                        .HasForeignKey("FileItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Blunderr.Core.Data.Entities.Tickets.TicketComment", "TicketComment")
                         .WithMany("Attachments")
                         .HasForeignKey("TicketCommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FileItem");
 
                     b.Navigation("TicketComment");
                 });

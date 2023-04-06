@@ -1,7 +1,7 @@
 using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
-using Blunderr.Core.Services.PasswordService;
-using Blunderr.Core.Services.TokenService;
+using Blunderr.Core.Data.Security.PasswordService;
+using Blunderr.Core.Data.Security.TokenService;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

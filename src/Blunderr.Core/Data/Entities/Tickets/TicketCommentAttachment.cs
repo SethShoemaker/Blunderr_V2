@@ -1,8 +1,10 @@
+using Blunderr.Core.Data.Entities.FileItems;
+
 namespace Blunderr.Core.Data.Entities.Tickets
 {
     public class TicketCommentAttachment : Entity
     {
-        public string FileName { get; set; } = null!;
+        public FileItem FileItem { get; set; } = null!;
 
         public TicketComment TicketComment { get; set; } = null!;
 

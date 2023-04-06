@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Blunderr.Core.Services.PasswordService
+namespace Blunderr.Core.Data.Security.PasswordService
 {
     public class PasswordService : IPasswordService
     {

@@ -1,6 +1,6 @@
 using Blunderr.Core.Data.Entities.Users;
 
-namespace Blunderr.Core.Services.TokenService
+namespace Blunderr.Core.Data.Security.TokenService
 {
     public interface ITokenService
     {

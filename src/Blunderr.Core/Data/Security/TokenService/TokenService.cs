@@ -2,7 +2,7 @@ using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blunderr.Core.Services.TokenService
+namespace Blunderr.Core.Data.Security.TokenService
 {
     public class TokenService : ITokenService
     {

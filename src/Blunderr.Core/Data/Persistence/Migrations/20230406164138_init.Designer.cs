@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blunderr.Core.Data.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230403183027_init")]
+    [Migration("20230406164138_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -21,6 +21,21 @@ namespace Blunderr.Core.Data.Persistence.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Blunderr.Core.Data.Entities.FileItems.FileItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileItem");
+                });
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Projects.Project", b =>
                 {
@@ -97,14 +112,15 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("FileItemId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TicketId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileItemId");
 
                     b.HasIndex("TicketId");
 
@@ -145,14 +161,15 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("FileItemId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TicketCommentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileItemId");
 
                     b.HasIndex("TicketCommentId");
 
@@ -250,11 +267,19 @@ namespace Blunderr.Core.Data.Persistence.Migrations
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Tickets.TicketAttachment", b =>
                 {
+                    b.HasOne("Blunderr.Core.Data.Entities.FileItems.FileItem", "FileItem")
+                        .WithMany()
+                        .HasForeignKey("FileItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Blunderr.Core.Data.Entities.Tickets.Ticket", "Ticket")
                         .WithMany("Attachments")
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FileItem");
 
                     b.Navigation("Ticket");
                 });
@@ -276,11 +301,19 @@ namespace Blunderr.Core.Data.Persistence.Migrations
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Tickets.TicketCommentAttachment", b =>
                 {
+                    b.HasOne("Blunderr.Core.Data.Entities.FileItems.FileItem", "FileItem")
+                        .WithMany()
+                        .HasForeignKey("FileItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Blunderr.Core.Data.Entities.Tickets.TicketComment", "TicketComment")
                         .WithMany("Attachments")
                         .HasForeignKey("TicketCommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FileItem");
 
                     b.Navigation("TicketComment");
                 });

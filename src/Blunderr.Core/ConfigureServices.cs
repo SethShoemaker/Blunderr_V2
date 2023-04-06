@@ -1,7 +1,8 @@
 using System.Reflection;
+using Blunderr.Core.Data.Files.FileItemService;
 using Blunderr.Core.Data.Persistence;
-using Blunderr.Core.Services.PasswordService;
-using Blunderr.Core.Services.TokenService;
+using Blunderr.Core.Data.Security.PasswordService;
+using Blunderr.Core.Data.Security.TokenService;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -19,6 +20,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.UseMySql(connection, ServerVersion.AutoDetect(connection));
             });
+
+            services.AddScoped<IFileItemService, S3FileItemService>();
         }
     }
 }

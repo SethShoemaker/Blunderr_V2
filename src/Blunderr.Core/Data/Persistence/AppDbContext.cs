@@ -1,13 +1,19 @@
+using Blunderr.Core.Data.Entities.FileItems;
 using Blunderr.Core.Data.Entities.Projects;
 using Blunderr.Core.Data.Entities.Tickets;
 using Blunderr.Core.Data.Entities.Users;
+using Blunderr.Core.Data.Files.FileItemService;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Blunderr.Core.Data.Persistence
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options){}
+        public AppDbContext(DbContextOptions options, IFileItemService fileItemService) : base(options)
+        {
+            FileItemService = fileItemService;
+        }
         
         public DbSet<User> Users { get; set; } = null!;
 
@@ -25,6 +31,15 @@ namespace Blunderr.Core.Data.Persistence
             modelBuilder.Entity<Ticket>().HasOne(t => t.Submitter);
 
             this.Seed(modelBuilder);
+        }
+
+        private IFileItemService FileItemService { get; set; }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await FileItemService.HandleFileItemEntriesAsync(ChangeTracker.Entries<FileItem>().AsQueryable());
+
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

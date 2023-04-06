@@ -1,4 +1,4 @@
-using Blunderr.Core.Services.TokenService;
+using Blunderr.Core.Data.Security.TokenService;
 using MediatR;
 
 namespace Blunderr.Core.Features.Security.Authenticate

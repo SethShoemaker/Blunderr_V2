@@ -1,7 +1,7 @@
 using Blunderr.Core.Data.Entities.Projects;
 using Blunderr.Core.Data.Entities.Tickets;
 using Blunderr.Core.Data.Entities.Users;
-using Blunderr.Core.Services.PasswordService;
+using Blunderr.Core.Data.Security.PasswordService;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blunderr.Core.Data.Persistence
