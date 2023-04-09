@@ -5,7 +5,7 @@ namespace Blunderr.Core.Data.Files.FileItemService
 {
     public interface IFileItemService
     {
-        public Task<bool> HandleFileItemEntriesAsync(IQueryable<EntityEntry<FileItem>> entries);
+        public Task HandleFileItemEntriesAsync(IQueryable<EntityEntry<FileItem>> entries);
 
         string LocationOf(FileItem fileItem);
     }

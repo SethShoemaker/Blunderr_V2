@@ -4,10 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
-builder.Services.AddCoreDependencies(
-    builder.Configuration.GetConnectionString("App"), 
-    builder.Environment.IsDevelopment());
+builder.Services.AddCoreDependencies(builder.Configuration, builder.Environment.IsDevelopment());
 
 builder.Services.AddAuthentication(TokenAuthenticationSchemeOptions.Name)
     .AddScheme<TokenAuthenticationSchemeOptions, TokenAuthenticationHandler>(TokenAuthenticationSchemeOptions.Name, option => {});

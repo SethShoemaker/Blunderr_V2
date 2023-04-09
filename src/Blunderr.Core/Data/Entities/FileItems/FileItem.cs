@@ -1,7 +1,14 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Blunderr.Core.Data.Entities.FileItems
 {
     public class FileItem : Entity
     {
-        public string FilePath { get; set; } = null!;
+        [NotMapped]
+        public Stream FileStream { get; set; } = null!;
+
+        public string FileName { get; set; } = null!;
+
+        public string DisplayName { get; set; } = null!;
     }
 }

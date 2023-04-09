@@ -158,6 +158,26 @@ namespace Blunderr.Core.Data.Persistence
             };
             modelBuilder.Entity<Ticket>().HasData(client1project1ticket1);
 
+            TicketComment client1project1ticket1comment1 = new ()
+            {
+                Id = 1,
+                Content = "You need to do X and Y in order for the feature to work",
+                SubmitterId = 1,
+                Created = DateTime.Now,
+                TicketId = 1
+            };
+            modelBuilder.Entity<TicketComment>().HasData(client1project1ticket1comment1);
+
+            TicketComment client1project1ticket1comment2 = new ()
+            {
+                Id = 2,
+                Content = "Can you do this for me?",
+                SubmitterId = 1,
+                Created = DateTime.Now,
+                TicketId = 1
+            };
+            modelBuilder.Entity<TicketComment>().HasData(client1project1ticket1comment2);
+
             Ticket client1project1ticket2 = new()
             {
                 Id = 2,

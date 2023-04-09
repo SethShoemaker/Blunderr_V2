@@ -21,7 +21,9 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FilePath = table.Column<string>(type: "longtext", nullable: false)
+                    FileName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DisplayName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -172,11 +174,11 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TicketId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     SubmitterId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    TicketId = table.Column<int>(type: "int", nullable: true)
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,7 +187,8 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         name: "FK_TicketComment_Tickets_TicketId",
                         column: x => x.TicketId,
                         principalTable: "Tickets",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TicketComment_Users_SubmitterId",
                         column: x => x.SubmitterId,

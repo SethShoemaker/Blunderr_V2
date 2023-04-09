@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blunderr.Core.Data.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230406164213_seed")]
-    partial class seed
+    [Migration("20230407124558_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,11 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FilePath")
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -58,64 +62,6 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("Projects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ClientId = 1,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3730),
-                            Name = "Sally's Website"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClientId = 1,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3780),
-                            Name = "Sally's Mobile App"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClientId = 2,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3790),
-                            Name = "James' Website"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ClientId = 2,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3790),
-                            Name = "James' Mobile App"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ClientId = 3,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3800),
-                            Name = "Thomas' Website"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ClientId = 3,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3810),
-                            Name = "Thomas' Mobile App"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ClientId = 4,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3810),
-                            Name = "Lucas' Website"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ClientId = 4,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3820),
-                            Name = "Lucas' Mobile App"
-                        });
                 });
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Tickets.Ticket", b =>
@@ -162,44 +108,6 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                     b.HasIndex("SubmitterId");
 
                     b.ToTable("Tickets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3830),
-                            Description = "I need help",
-                            Priority = 0,
-                            ProjectId = 1,
-                            Status = 0,
-                            SubmitterId = 1,
-                            Title = "Ticket",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3840),
-                            Description = "I need more help",
-                            Priority = 1,
-                            ProjectId = 1,
-                            Status = 0,
-                            SubmitterId = 1,
-                            Title = "Ticket 2",
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Created = new DateTime(2023, 4, 6, 12, 42, 13, 595, DateTimeKind.Local).AddTicks(3850),
-                            Description = "Could you build this?",
-                            Priority = 0,
-                            ProjectId = 1,
-                            Status = 0,
-                            SubmitterId = 1,
-                            Title = "Ticket 3",
-                            Type = 1
-                        });
                 });
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Tickets.TicketAttachment", b =>
@@ -239,7 +147,7 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                     b.Property<int>("SubmitterId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TicketId")
+                    b.Property<int>("TicketId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -303,88 +211,6 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "Sally@Client.com",
-                            Name = "Sally Client",
-                            PasswordHash = "�\"�4K�����f4$�Y�!",
-                            PasswordSalt = "1319448964",
-                            Phone = 1234567890,
-                            Role = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "James@Client.com",
-                            Name = "James Client",
-                            PasswordHash = "���~�/���O����Ű�ƭ",
-                            PasswordSalt = "1503377391",
-                            Phone = 1234567890,
-                            Role = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "Thomas@Client.com",
-                            Name = "Thomas Client",
-                            PasswordHash = "��p3����z�))uIi",
-                            PasswordSalt = "2026339243",
-                            Phone = 1234567890,
-                            Role = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Email = "Lucas@Client.com",
-                            Name = "Lucas Client",
-                            PasswordHash = "m�ۯ�\"�����~QI�����",
-                            PasswordSalt = "373485992",
-                            Phone = 1234567890,
-                            Role = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Email = "Jamie@LoremIpsum.com",
-                            Name = "Jamie Dev",
-                            PasswordHash = "Ť����С�v��Qw\\",
-                            PasswordSalt = "1456109873",
-                            Phone = 1234567890,
-                            Role = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Email = "Sam@LoremIpsum.com",
-                            Name = "Sam Dev",
-                            PasswordHash = "/���VZ�%J�]:���dv�k",
-                            PasswordSalt = "231204354",
-                            Phone = 1234567890,
-                            Role = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Email = "Jonathan@LoremIpsum.com",
-                            Name = "Jonathan Manager",
-                            PasswordHash = "�I����m��j��",
-                            PasswordSalt = "1908393835",
-                            Phone = 1234567890,
-                            Role = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Email = "Gerald@LoremIpsum.com",
-                            Name = "Gerald Manager",
-                            PasswordHash = "g�����!�wj#��2�?",
-                            PasswordSalt = "1141757280",
-                            Phone = 1234567890,
-                            Role = 2
-                        });
                 });
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Users.UserToken", b =>
@@ -470,11 +296,15 @@ namespace Blunderr.Core.Data.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Blunderr.Core.Data.Entities.Tickets.Ticket", null)
+                    b.HasOne("Blunderr.Core.Data.Entities.Tickets.Ticket", "Ticket")
                         .WithMany("Comments")
-                        .HasForeignKey("TicketId");
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Submitter");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Blunderr.Core.Data.Entities.Tickets.TicketCommentAttachment", b =>
