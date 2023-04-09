@@ -11,6 +11,7 @@ nav#nav{
         background-color: $darkNavyBlue;
         display: grid;
         grid-template-columns: 1fr 1fr;
+        z-index: 1;
 
         div{
             display: flex;

@@ -1,0 +1,151 @@
+@page "{TicketId:int}"
+@using Blunderr.Core.Features.Tickets.TicketShow
+@model Blunderr.Web.Pages.Tickets.Show
+@{
+    ViewData["Title"] = "Ticket " + Model.TicketId;
+
+    TicketShowResponse D = Model.GetData;
+    TicketDto T = D.Ticket;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Tickets/show.css">
+}
+
+<div class="show-heading">
+    <h1>@ViewData["Title"]</h1>
+    <div class="show-heading-right">
+        <img src="~/images/icons/more.svg" alt="more" class="more-button">
+        <div class="more-menu popup-inactive" id="popup-menu">
+            <a asp-page="/Tickets/Edit" asp-route-TicketId=@Model.TicketId>Edit</a>
+            <a asp-page="/Tickets/Delete" asp-route-TicketId=@Model.TicketId>Delete</a>
+        </div>
+    </div>
+</div>
+<div class="show-body">
+    <div class="row">
+        <div class="item">
+            <label for="ticket-type">Type</label>
+            <span id="ticket-type">@T.Type</span>
+        </div>
+        <div class="item">
+            <label for="ticket-priority">Priority</label>
+            <span id="ticket-priority" class="bubble priority-@T.Priority">@T.Priority</span>
+        </div>
+        <div class="item">
+            <label for="ticket-project">Project</label>
+            <a asp-page="/Projects/Show" asp-route-ProjectId=@T.Project.Id id="ticket-project">@T.Project.Name</a>
+        </div>
+        <div class="item">
+            <label for="ticket-created">Created</label>
+            <span id="ticket-created">@T.Created.ToString("MMMM d yyyy")</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="item">
+            <label for="ticket-title">Title</label>
+            <span id="ticket-title">@T.Title</span>
+        </div>
+        <div class="item">
+            <label for="ticket-description">Description</label>
+            <span id="ticket-description">@T.Description</span>
+        </div>
+        <div class="item">
+            <label for="ticket-attachments">Attachments</label>
+            @if(T.Attachments.Any())
+            {
+                <ul id="ticket-attachments" class="attachment-list">
+                    @foreach (var a in T.Attachments)
+                    {
+                        <a href="@a.Location" target="_blank" role="listitem"><img src="~/images/icons/attachment.svg"> @a.Location</a>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span id="ticket-attachments">No Attachments</span>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="item">
+            <label for="ticket-status">Status</label>
+            <span id="ticket-status" class="bubble status-@T.Status">@T.Status</span>
+        </div>
+        <div class="item">
+            <label for="ticket-developer">Developer</label>
+            @if (T.Developer is not null && D.CanViewUsers)
+            {
+                <a id="ticket-developer" asp-page="/Users/Show" asp-route-UserId=@T.Developer.Id>@T.Developer.Name</a>
+            }
+            else
+            {
+                <span id="ticket-developer">None</span>
+            }
+        </div>
+        <div class="item">
+            <label for="ticket-submitter">Submitter</label>
+            @if(D.CanViewUsers)
+            {
+                <a id="ticket-submitter" asp-page="/Users/Show" asp-route-UserId=@T.Submitter.Id>@T.Submitter.Name</a>
+            }
+            else
+            {
+                <span id="ticket-submitter">@T.Submitter.Name</span>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <label for="ticket-comments">Comments</label>
+        @if (T.Comments.Any())
+        {
+            <ul id="ticket-comments">
+            @foreach (var c in T.Comments)
+            {
+                <li class="ticket-comment">
+                    <div class="head">
+                        @if (D.CanViewUsers)
+                        {
+                            <a id="name" asp-page="/Users/Show" asp-route-UserId=@c.Submitter.Id>@c.Submitter.Name</a>
+                        }
+                        else
+                        {
+                            <span id="name">@c.Submitter.Name</span>
+                        }
+                        <span id="created">@c.Created.ToString("MMMM d yyyy")</span>
+                    </div>
+                    <div class="body">
+                        <div class="left">
+                            <p>@c.Content</p>
+                        </div>
+                        <div class="right">
+                            @if (c.Attachments.Any())
+                            {
+                                <ul class="attachment-list">
+                                    @foreach (var a in c.Attachments)
+                                    {
+                                        <a href="@a.Location" target="_blank" role="list-item"><img src="~/images/icons/attachment.svg"> @a.FileName</a>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+            </ul>
+        }
+        <form id="comment-form" method="POST" enctype="multipart/form-data">
+            <div class="top">
+                <input type="text" asp-for="CommentContent" placeholder="Add Comment" required>
+                <input type="submit" value="Submit" class="button button-blue">
+            </div>
+            <div class="bottom">
+                <label for="comment-attachments">
+                    <img src="~/images/icons/attachment.svg">
+                    Add Attachments
+                </label>
+                <input asp-for="CommentAttachments" multiple id="comment-attachments">
+            </div>
+        </form>
+    </div>
+</div>

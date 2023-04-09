@@ -1,2 +1,168 @@
 @import '../Shared/_variables.scss';
 
+div.show-body{
+    div.row:nth-of-type(1){
+        div.item:nth-of-type(1){
+            width: calc(-2rem + 21vw);
+        }
+
+        div.item:nth-of-type(2){
+            width: calc(-6rem + 15vw);
+        }
+
+        div.item:nth-of-type(3){
+            width: calc(-1rem + 16vw);
+        }
+    }
+
+    div.row:nth-of-type(2){
+        div.item:nth-of-type(1){
+            width: calc(-2rem + 17vw);
+        }
+
+        div.item:nth-of-type(2){
+            width: calc(-4rem + 31vw);
+        }
+
+        div.item:nth-of-type(3){
+            width: calc(-2rem + 16vw);
+        }
+    }
+
+    div.row:nth-of-type(3){
+
+        div.item:nth-of-type(1){
+            width: calc(-4rem + 15vw);
+        }
+
+        div.item:nth-of-type(2){
+            width: calc(-2rem + 21vw);
+        }
+
+        div.item:nth-of-type(3){
+            width: calc(-2rem + 21vw);
+        }
+    }
+
+    div.row:last-of-type{
+        flex-direction: column;
+        align-items: flex-start;
+
+        ul#ticket-comments {
+            list-style: none;
+            width: 98%;
+            margin-left: calc(0.2rem + 0.1vw);
+
+            li.ticket-comment{
+                border-bottom: calc(0.02rem + 0.05vw) solid $mediumGrey;
+                padding: calc(1rem + 1.5vw) 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding-left: calc(0.5rem + 3.5vw);
+
+                &:first-of-type{
+                    border-top: calc(0.02rem + 0.05vw) solid $mediumGrey;
+                }
+
+                div.head{
+                    display: flex;
+                    font-size: min(0.25rem + 2.2vw, 0.75rem + 0.18vw);
+                    padding: calc(0.4rem + 0.42vw) 0;
+
+                    #name{
+                        text-decoration: none;
+                        color: inherit;
+                        font-weight: 500;
+                        padding-right: calc(0.35rem + 0.4vw);
+                    }
+
+                    span#created{
+                        font-weight: 200;
+                    }
+                }
+
+                div.body{
+                    @media (min-width:800px) {
+                        display: grid;
+                        grid-template-columns: 4fr 3fr;
+                    }
+
+                    @media (max-width:800px) {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    div.left p{
+                        font-size: min(0.25rem + 2.3vw, 0.8rem + 0.2vw);
+                        line-height: calc(1rem + 1.2vw);
+                        font-weight: 200;
+                        padding: 0 calc(0.13rem + 0.15vw);
+                    }
+
+                    div.right ul{
+                        @media (max-width:800px) {
+                            padding-top: calc(0.4rem + 0.42vw);
+                        }
+                    }
+                }
+            }
+        }
+
+        form#comment-form{
+            margin: calc(1.5rem + 2vw) calc(0.25rem + 1vw);
+
+            div.top{
+                display: flex;
+
+                input[type="text"]{
+                    background-color: $navyBlue;
+                    outline: none;
+                    border: none;
+                    width: calc(10rem + 20vw);
+                    margin-right: calc(0.5rem + 0.5vw);
+                    padding-left: calc(0.2rem + 0.1vw);
+                    color: $offWhite;
+
+                    border-bottom: calc(0.06rem + 0.08vw) solid $lightGrey;
+                }
+            }
+            div.bottom{
+                margin-top: calc(0.6rem + 0.55vw);
+                display: flex;
+                align-items: center;
+                font-size: min(0.18rem + 2vw, 0.7rem + 0.12vw);
+
+                label{
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    padding-bottom: 0;
+                    font-weight: 500;
+                    margin-right: calc(0.5rem + 0.7vw);
+
+                    img{
+                        height: min(0.2rem + 2.5vw, 0.67rem + 0.2vw);
+                        padding-right: calc(0.15rem + 0.17vw);
+                    }
+                }
+
+                input[type="file"]{
+
+                    font-weight: 300;
+
+                    &::file-selector-button{
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+span.bubble{
+
+    &.priority-Low{
+        color: $green !important;
+    }
+}

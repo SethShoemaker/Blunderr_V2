@@ -1,0 +1,18 @@
+@import './_variables.scss';
+
+.button{
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    padding: min(0.2rem + 1vw, 0.4rem + 0.1vw) min(0.3rem + 1.5vw, 0.6rem + 0.15vw);
+    border: none;
+    color: $darkNavyBlue;
+    font-size: min(0.18rem + 2vw, 0.7rem + 0.12vw);
+    letter-spacing: min(0.01rem + 0.025vw, 0.045rem + 0.025vw);
+    font-weight: 600;
+    border-radius: calc(0.1rem + 0.3vw);
+
+    &.button-blue{
+        background-color: $babyBlue;
+    }
+}
