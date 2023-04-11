@@ -119,6 +119,24 @@ table.dashboard-table{
             line-height: min(0.5rem + 16vw, 3.25rem + 2.5vw);
             padding-left: calc(0.02rem + 0.1vw);
 
+            &.link{
+                a{
+                    text-decoration: none;
+                }
+
+                &.link-blue{
+                    a{
+                        color: $babyBlue;
+                    }
+                }
+
+                &.link-plain{
+                    a{
+                        color: $lightGrey;
+                    }
+                }
+            }
+
             &.more-container{
                 display: flex;
                 justify-content: flex-end;

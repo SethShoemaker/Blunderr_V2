@@ -1,0 +1,32 @@
+@import '../Shared/_variables.scss';
+
+table.dashboard-table{
+    thead tr,
+    tbody tr{
+        @media (max-width:1300px) {
+            grid-template-columns: 
+                calc(2.2rem + 3vw) // id
+                calc(9.5rem + 4.5vw) // name
+                calc(9.5rem + 4.5vw) // client
+                calc(9.5rem + 4.5vw) // created
+                calc(8rem + 4vw) // pending tickets
+                calc(8rem + 4vw) // open tickets
+                calc(5.5rem + 3vw) // resolved tickets
+                1fr // button
+            ;
+        }
+
+        @media (min-width:1300px) {
+            grid-template-columns: 
+                7% // id
+                21% // name
+                17% // client
+                10% // created
+                15% // pending tickets
+                13% // open tickets
+                12% // resolved tickets
+                5% // button
+            ;
+        }
+    }
+}

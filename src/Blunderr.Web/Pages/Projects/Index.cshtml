@@ -1,0 +1,121 @@
+@page
+@model Blunderr.Web.Pages.Projects.Index
+@using Blunderr.Core.Features.Projects.ProjectList
+@using Blunderr.Core.Services.PaginationService
+@{
+    ViewData["Title"] = "Projects";
+
+    ProjectListResponse D = Model.Data;
+    Page<ProjectDto> P = D.Page;
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/Projects/index.css">
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="dashboard-table-header">
+    <div class="filters">
+        <div class="link-filters"></div>
+        <div class="select-filters">
+            <select id="client-filter">
+                <option value="">All Clients</option>
+                @foreach (var client in D.Clients)
+                {
+                    <option value="@client.Id">@client.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="create-container">
+        @if(D.CanManageProjects)
+        {
+            <a asp-page="/Projects/Create"><span>Create Ticket</span></a>
+        }
+    </div>
+</div>
+<table class="dashboard-table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Client</th>
+            <th>Created</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @if(P.TotalCount is not 0)
+        {
+            @foreach (var project in P.Items)
+            {
+                <tr>
+                    <td>@project.Id</td>
+                    <td>@project.Name</td>
+                    <td class="link link-plain">
+                        @if (D.CanViewUsers)
+                        {
+                            <a asp-page="/Users/Show" asp-route-UserId=@project.Client.Id>@project.Client.Name</a>
+                        }
+                        else
+                        {
+                            @project.Client.Name
+                        }
+                    </td>
+                    <td>@project.Created.ToString("MMM dd")</td>
+                    <td class="link link-blue"><a asp-page="/Tickets/Index" asp-route-ProjectId=@project.Id asp-route-Status="Pending">pending tickets</a></td>
+                    <td class="link link-blue"><a asp-page="/Tickets/Index" asp-route-ProjectId=@project.Id asp-route-Status="Open">open tickets</a></td>
+                    <td class="link link-blue"><a asp-page="/Tickets/Index" asp-route-ProjectId=@project.Id asp-route-Status="Resolved">resolved tickets</a></td>
+                    <td class="more-container">
+                        <img src="~/images/icons/more.svg" alt="more" class="more-button">
+                        <div class="more-menu popup-inactive" id="popup-menu-@project.Id">
+                            <a asp-page="/Projects/Show" asp-route-TicketId=@project.Id>View</a>
+                            @if(D.CanManageProjects)
+                            {
+                                <a asp-page="/Projects/Edit" asp-route-TicketId=@project.Id>Edit</a>
+                                <a asp-page="/Projects/Delete" asp-route-TicketId=@project.Id>Delete</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td></td>
+                <td>No Results</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if(P.TotalCount is not 0)
+{
+    <nav class="pagination">
+        <div class="pagination-left">
+            <span>Showing @P.StartPosition - @P.EndPosition of @P.TotalCount</span>
+        </div>
+        <div class="pagination-right">
+            @if(P.HasPrevPage)
+            {
+                <a id="pagination-prev" role="link"><img src="~/images/icons/prev.svg" alt="Previous"></a>
+            }
+            <span>Page @Model.PageNumber</span>
+            @if(P.HasNextPage)
+            {
+                <a id="pagination-next" role="link"><img src="~/images/icons/next.svg" alt="Next"></a>
+            }
+        </div>
+    </nav>
+}
+
+@section Scripts
+{
+    <script src="~/js/Shared/table.js"></script>
+    <script src="~/js/Projects/index.js"></script>
+}
