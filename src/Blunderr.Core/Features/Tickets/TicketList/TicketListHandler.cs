@@ -81,7 +81,7 @@ namespace Blunderr.Core.Features.Tickets.TicketList
             IQueryable<User> submitters = _context.Users;
 
             if(request.accessorRole == UserRole.Client) // filter out other clients
-                submitters = submitters.Where(u => u.Role != UserRole.Developer || u.Id == request.accessorId);
+                submitters = submitters.Where(u => u.Role != UserRole.Client || u.Id == request.accessorId);
 
             IQueryable<UserDto> submitterDtos = submitters.Select(s => new UserDto
             {
