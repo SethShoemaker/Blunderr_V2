@@ -53,18 +53,15 @@ namespace Blunderr.Core.Features.Tickets.TicketCommentCreate
                 Created = DateTime.Now
             };
 
-            comment.Attachments = (
-                from f in request.fileItemDtos
-                select new TicketCommentAttachment
-                {
-                    FileItem = new FileItem 
-                        { 
-                            FileStream = f.fileStream,
-                            DisplayName = f.displayName
-                        },
-                    TicketComment = comment
-                }
-            ).ToList();
+            comment.Attachments = request.fileItemDtos.Select(fi => new TicketCommentAttachment()
+            {
+                FileItem = new FileItem
+                    {
+                        FileStream = fi.fileStream,
+                        DisplayName = fi.displayName
+                    },
+                TicketComment = comment
+            }).ToList();
 
             return comment;
         }
