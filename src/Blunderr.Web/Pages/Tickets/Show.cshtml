@@ -97,43 +97,55 @@
     </div>
     <div class="row">
         <label for="ticket-comments">Comments</label>
-        @if (T.Comments.Any())
-        {
-            <ul id="ticket-comments">
-            @foreach (var c in T.Comments)
+        <ul id="ticket-comments">
+            @if (T.Comments.Any())
+            {
+                @foreach (var c in T.Comments)
+                {
+                    <li class="ticket-comment">
+                        <div class="head">
+                            @if (D.CanViewUsers)
+                            {
+                                <a id="name" asp-page="/Users/Show" asp-route-UserId=@c.Submitter.Id>@c.Submitter.Name</a>
+                            }
+                            else
+                            {
+                                <span id="name">@c.Submitter.Name</span>
+                            }
+                            <span id="created">@c.Created.ToString("MMMM d yyyy")</span>
+                        </div>
+                        <div class="body">
+                            <div class="left">
+                                <p>@c.Content</p>
+                            </div>
+                            <div class="right">
+                                @if (c.Attachments.Any())
+                                {
+                                    <ul class="attachment-list">
+                                @foreach (var a in c.Attachments)
+                                        {
+                                            <a href="@a.Location" target="_blank" role="list-item"><img src="~/images/icons/attachment.svg"> @a.FileName</a>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+            else
             {
                 <li class="ticket-comment">
-                    <div class="head">
-                        @if (D.CanViewUsers)
-                        {
-                            <a id="name" asp-page="/Users/Show" asp-route-UserId=@c.Submitter.Id>@c.Submitter.Name</a>
-                        }
-                        else
-                        {
-                            <span id="name">@c.Submitter.Name</span>
-                        }
-                        <span id="created">@c.Created.ToString("MMMM d yyyy")</span>
-                    </div>
                     <div class="body">
                         <div class="left">
-                            <p>@c.Content</p>
-                        </div>
-                        <div class="right">
-                            @if (c.Attachments.Any())
-                            {
-                                <ul class="attachment-list">
-                                    @foreach (var a in c.Attachments)
-                                    {
-                                        <a href="@a.Location" target="_blank" role="list-item"><img src="~/images/icons/attachment.svg"> @a.FileName</a>
-                                    }
-                                </ul>
-                            }
+                            <p>
+                                No Comments
+                            </p>
                         </div>
                     </div>
                 </li>
             }
-            </ul>
-        }
+        </ul>
         <form id="comment-form" method="POST" enctype="multipart/form-data">
             <div class="top">
                 <input type="text" asp-for="CommentContent" placeholder="Add Comment" required>
