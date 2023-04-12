@@ -160,9 +160,43 @@ div.show-body{
     }
 }
 
-span.bubble{
+div.bubble{
 
-    &.priority-Low{
+    display: flex;
+    align-items: center;
+
+    $bubbleBackgroundOpacity: 0.04;
+
+    span{
+        display: block;
+        width: calc(5.7rem + 0.6vw);
+        padding: calc(0.2rem + 0.2vw);
+        border-radius: calc(1.4rem - 0.14vw);
+        letter-spacing: calc(0.04rem + 0.02vw);
+        font-weight: 600 !important;
+        font-size: min(0.21rem + 2.4vw, 0.71rem + 0.15vw) !important;
+        text-align: center;
+    }
+
+    &.priority-Low span,
+    &.status-Resolved span{
         color: $green !important;
+        background-color: rgba($color: $green, $alpha: $bubbleBackgroundOpacity);
+    }
+
+    &.priority-Medium span{
+        color: $yellow !important;
+        background-color: rgba($color: $yellow, $alpha: $bubbleBackgroundOpacity);
+    }
+
+    &.status-Open span{
+        color: $babyBlue !important;
+        background-color: rgba($color: $babyBlue, $alpha: $bubbleBackgroundOpacity);
+    }
+
+    &.priority-High span,
+    &.status-Pending span{
+        color: $red !important;
+        background-color: rgba($color: $red, $alpha: $bubbleBackgroundOpacity);
     }
 }
