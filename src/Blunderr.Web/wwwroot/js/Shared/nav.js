@@ -16,11 +16,16 @@ NAV_TOGGLE_BUTTON.addEventListener("click", function () {
     }
 });
 
-const PATH = window.location.pathname;
+
+const CURRENT_PATH = window.location.pathname;
+const CURRENT_ROOT_PATH = CURRENT_PATH.split("/")[1];
+
 const SIDEBAR_TABS_LIST = document.querySelector("div#sidebar ul").children;
+const ROOT_PATH_ATTRIBUTE = "data-root-path";
+
 for (let i = 0; i < SIDEBAR_TABS_LIST.length; i++) {
     let tab = SIDEBAR_TABS_LIST[i];
-    let tabRoute = tab.getAttribute("data-route");
-    if (tabRoute == PATH)
+    let tabRootPath = tab.getAttribute(ROOT_PATH_ATTRIBUTE);
+    if (tabRootPath == CURRENT_ROOT_PATH)
         tab.classList.add("current");
 }

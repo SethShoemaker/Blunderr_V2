@@ -20,19 +20,19 @@
     </header>
     <div id="sidebar" data-hidden="false">
         <ul>
-            <a asp-page="/Dashboard" data-route="/Dashboard" aria-role="listitem">
+            <a asp-page="/Dashboard" data-root-path="Dashboard" aria-role="listitem">
                 <div class="icon-container">
                     <img src="~/images/icons/dashboard.svg" alt> 
                 </div>
                 <span>Dashboard</span>
             </a>
-            <a asp-page="/Tickets/Index" data-route="/Tickets" aria-role="listitem">
+            <a asp-page="/Tickets/Index" data-root-path="Tickets" aria-role="listitem">
                 <div class="icon-container">
                     <img src="~/images/icons/tickets.svg" alt>
                 </div>
                 <span>Tickets</span>
             </a>
-            <a asp-page="/Projects/Index" data-route="/Projects" aria-role="listitem">
+            <a asp-page="/Projects/Index" data-root-path="Projects" aria-role="listitem">
                 <div class="icon-container">
                     <img src="~/images/icons/projects.svg" alt>
                 </div>
@@ -40,7 +40,7 @@
             </a>
             @if (User.Role() != UserRole.Client)
             {
-                <a asp-page="/Users/Index" data-route="/Users" aria-role="listitem">
+                <a asp-page="/Users/Index" data-root-path="Users" aria-role="listitem">
                     <div class="icon-container">
                         <img src="~/images/icons/user.svg" alt>
                     </div>
