@@ -74,11 +74,11 @@
                     <td class="more-container">
                         <img src="~/images/icons/more.svg" alt="more" class="more-button">
                         <div class="more-menu popup-inactive" id="popup-menu-@project.Id">
-                            <a asp-page="/Projects/Show" asp-route-TicketId=@project.Id>View</a>
+                            <a asp-page="/Projects/Show" asp-route-ProjectId=@project.Id>View</a>
                             @if(D.CanManageProjects)
                             {
-                                <a asp-page="/Projects/Edit" asp-route-TicketId=@project.Id>Edit</a>
-                                <a asp-page="/Projects/Delete" asp-route-TicketId=@project.Id>Delete</a>
+                                <a asp-page="/Projects/Edit" asp-route-ProjectId=@project.Id>Edit</a>
+                                <a asp-page="/Projects/Delete" asp-route-ProjectId=@project.Id>Delete</a>
                             }
                         </div>
                     </td>
