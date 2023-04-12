@@ -1,0 +1,65 @@
+@page "{ProjectId:int}"
+@model Blunderr.Web.Pages.Projects.Show
+@using Blunderr.Core.Features.Projects.ProjectShow
+@{
+    ViewData["Title"] = "Project " + Model.ProjectId;
+
+    int Id = Model.ProjectId;
+    ProjectShowResponse D = Model.Data;
+    ProjectDto P = D.Project;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Projects/show.css">
+}
+
+<div class="show-heading">
+    <h1>@ViewData["Title"]</h1>
+    <div class="show-heading-right">
+        @if (D.CanManageProject)
+        {
+            <img src="~/images/icons/more.svg" alt="more" class="more-button">
+            <div class="more-menu popup-inactive" id="popup-menu">
+                <a asp-page="/Projects/Edit" asp-route-ProjectId=@Model.ProjectId>Edit</a>
+                <a asp-page="/Projects/Delete" asp-route-ProjectId=@Model.ProjectId>Delete</a>
+            </div>
+        }
+    </div>
+</div>
+<div class="show-body">
+    <div class="row">
+        <div class="item">
+            <label for="project-name">Name</label>
+            <span id="project-name">@P.Name</span>
+        </div>
+        <div class="item">
+            <label for="project-client">Client</label>
+            @if(D.CanViewUsers)
+            {
+                <a id="project-client" asp-page="/Users/Show" asp-route-UserID=@P.Client.Id>@P.Client.Name</a>
+            }
+            else
+            {
+                <span id="project-client">@P.Client.Name</span>
+            }
+        </div>
+        <div class="item">
+            <label for="project-created">Created</label>
+            <span id="project-created">@P.Created.ToString("MMMM d yyyy")</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="item">
+            <label for="project-pending-tickets">Num. Pending Tickets</label>
+            <a id="project-pending-tickets" asp-page="/Tickets/Index" asp-route-ProjectId=@Id asp-route-Status="Pending">@P.NumPendingTickets pending tickets</a>
+        </div>
+        <div class="item">
+            <label for="project-open-tickets">Num. Open Tickets</label>
+            <a id="project-open-tickets" asp-page="/Tickets/Index" asp-route-ProjectId=@Id asp-route-Status="Open">@P.NumOpenTickets open tickets</a>
+        </div>
+        <div class="item">
+            <label for="project-resolved-tickets">Num. Resolved Tickets</label>
+            <a id="project-resolved-tickets" asp-page="/Tickets/Index" asp-route-ProjectId=@Id asp-route-Status="Resolved">@P.NumResolvedTickets resolved tickets</a>
+        </div>
+    </div>
+</div>
