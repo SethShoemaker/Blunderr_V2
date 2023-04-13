@@ -1,11 +1,13 @@
 using Blunderr.Core.Features.Tickets.TicketCommentCreate;
 using Blunderr.Core.Features.Tickets.TicketShow;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Blunderr.Web.Pages.Tickets
 {
+    [Authorize]
     public class Show : PageModel
     {
         private readonly IMediator _mediator;

@@ -1,10 +1,12 @@
 using Blunderr.Core.Features.Projects.ProjectShow;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Blunderr.Web.Pages.Projects
 {
+    [Authorize]
     public class Show : PageModel
     {
         private readonly IMediator _mediator;

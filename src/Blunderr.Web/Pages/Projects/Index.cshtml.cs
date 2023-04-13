@@ -1,11 +1,13 @@
 using Blunderr.Core.Features.Projects.ProjectList;
 using Blunderr.Core.Services.PaginationService;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Blunderr.Web.Pages.Projects
 {
+    [Authorize]
     public class Index : PageModel
     {
         private readonly IMediator _mediator;
