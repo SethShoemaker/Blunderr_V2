@@ -22,6 +22,9 @@ namespace Blunderr.Core.Features.Tickets.TicketDelete
             Ticket? ticket = await _context.Tickets
                 .Where(t => t.Id == request.TicketId)
                 .Include(t => t.Project)
+                .Include(t => t.Attachments)
+                .Include(t => t.Comments)
+                .ThenInclude(tc => tc.Attachments)
                 .FirstOrDefaultAsync();
 
             if(ticket is null){
@@ -33,6 +36,13 @@ namespace Blunderr.Core.Features.Tickets.TicketDelete
                 r.Error = Error.Forbidden;
                 return r;
             }
+
+            foreach (var attachment in ticket.Attachments)
+                _context.Remove(attachment.FileItem);
+
+            foreach (var comment in ticket.Comments)
+                foreach (var attachment in comment.Attachments)
+                    _context.Remove(attachment.FileItem);
 
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();

@@ -79,7 +79,7 @@ namespace Blunderr.Core.Data.Files.FileItemService
                 DeleteObjectRequest request = new DeleteObjectRequest()
                 {
                     BucketName = BucketName,
-                    Key = fileItems[i].DisplayName
+                    Key = fileItems[i].FileName
                 };
 
                 tasks[i] = _s3.DeleteObjectAsync(request);

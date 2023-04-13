@@ -30,6 +30,9 @@ namespace Blunderr.Core.Data.Persistence
             modelBuilder.Entity<Ticket>().HasOne(t => t.Developer);
             modelBuilder.Entity<Ticket>().HasOne(t => t.Submitter);
 
+            modelBuilder.Entity<TicketAttachment>().Navigation(ta => ta.FileItem).AutoInclude();
+            modelBuilder.Entity<TicketCommentAttachment>().Navigation(tca => tca.FileItem).AutoInclude();
+
             this.Seed(modelBuilder);
         }
 
