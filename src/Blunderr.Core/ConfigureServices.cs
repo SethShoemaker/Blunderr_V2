@@ -4,6 +4,7 @@ using Blunderr.Core.Data.Files.FileItemService;
 using Blunderr.Core.Data.Persistence;
 using Blunderr.Core.Data.Security.PasswordService;
 using Blunderr.Core.Data.Security.TokenService;
+using Blunderr.Core.Services.PhoneService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -15,6 +16,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
+
+            // Data Layer
             services.AddDbContext<AppDbContext>(options =>
             {
                 string connection = Configuration.GetConnectionString("App");
@@ -28,6 +31,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped<IPasswordService, PasswordService>();
             services.AddScoped<ITokenService, TokenService>();
+
+
+            // service layer
+            services.AddSingleton<IPhoneService, PhoneService>();
         }
     }
 }
