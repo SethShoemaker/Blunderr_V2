@@ -1,0 +1,67 @@
+@page "{UserId:int}"
+@model Blunderr.Web.Pages.Users.Show
+@using Blunderr.Core.Features.Users.UserShow
+@{
+    UserShowResponse D = Model.Data;
+    UserDto U = D.User;
+
+    ViewData["Title"] = U.Name;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Users/show.css">
+}
+
+<div class="show-heading">
+    <h1>@ViewData["Title"]</h1>
+    <div class="show-heading-right">
+        @if (D.CanManageUser)
+        {
+            <img src="~/images/icons/more.svg" alt="more" class="more-button">
+            <div class="more-menu popup-inactive" id="popup-menu">
+                <a asp-page="/Users/Edit" asp-route-UserId=@Model.UserId>Edit</a>
+                <a asp-page="/Users/Delete" asp-route-UserId=@Model.UserId>Delete</a>
+            </div>
+        }
+    </div>
+</div>
+<div class="show-body">
+    <div class="row">
+        <div class="item">
+            <label for="user-name">Name</label>
+            <span id="user-name">@U.Name</span>
+        </div>
+        <div class="item">
+            <label for="user-email">Email</label>
+            <a href="mailto:@U.Email" id="user-email">@U.Email</a>
+        </div>
+        <div class="item">
+            <label for="user-phone">Phone</label>
+            @if (U.Phone is null)
+            {
+                <span id="user-phone">null</span>
+            }
+            else
+            {
+                <a href="tel:@U.Phone" id="user-phone">@U.Phone</a>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="item">
+            <label for="user-role">Role</label>
+            <span id="user-role">@U.Role</span>
+        </div>
+        <div class="item">
+            <label for="user-submitted-tickets">Num. Submitted Tickets</label>
+            <a id="user-submitted-tickets" asp-page="/Tickets/Index" asp-route-SubmitterId=@Model.UserId>@U.NumSubmittedTickets submitted tickets</a>
+        </div>
+        @if (U.CanBeAssignedTickets)
+        {
+            <div class="item">
+                <label for="user-assigned-tickets">Num. Assigned Tickets</label>
+                <a id="user-assigned-tickets" asp-page="/Tickets/Index" asp-route-DeveloperId=@Model.UserId>@U.NumAssignedTickets assigned tickets</a>
+            </div>
+        }
+    </div>
+</div>
