@@ -1,0 +1,113 @@
+@page
+@model Blunderr.Web.Pages.Users.Index
+@using Blunderr.Core.Features.Users.UserList
+@using Blunderr.Core.Services.PaginationService
+@{
+    ViewData["Title"] = "Users";
+
+    UserListResponse D = Model.Data;
+    Page<UserDto> P = D.Page;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/Users/index.css">
+}
+
+<div class="dashboard-table-header">
+    <div class="filters">
+        <div class="link-filters"></div>
+        <div class="select-filters">
+            <select id="role-filter">
+                <option value="">All Roles</option>
+                <option value="Client">Client</option>
+                <option value="Developer">Developer</option>
+                <option value="Manager">Manager</option>
+            </select>
+        </div>
+    </div>
+    <div class="create-container">
+        @if(D.CanManageUsers)
+        {
+            <a asp-page="/Users/Create"><span>Create User</span></a>
+        }
+    </div>
+</div>
+<table class="dashboard-table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th></th>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @if(P.TotalCount is not 0)
+        {
+            @foreach (var user in P.Items)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Role</td>
+                    <td class="link link-blue"><a asp-page="/Tickets/Index" asp-route-SubmitterId=@user.Id>submitted tickets</a></td>
+                    <td class="link link-blue">
+                        @if (user.CanBeAssignedTickets)
+                        {
+                            <a asp-page="/Tickets/Index" asp-route-DeveloperId=@user.Id>assigned tickets</a>
+                        }
+                    </td>
+                    <td class="more-container">
+                        <img src="~/images/icons/more.svg" alt="more" class="more-button">
+                        <div class="more-menu popup-inactive" id="popup-menu-@user.Id">
+                            <a asp-page="/Users/Show" asp-route-UserId=@user.Id>View</a>
+                            @if(D.CanManageUsers)
+                            {
+                                <a asp-page="/Users/Edit" asp-route-UserId=@user.Id>Edit</a>
+                                <a asp-page="/Users/Delete" asp-route-UserId=@user.Id>Delete</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td></td>
+                <td>No Results</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if(P.TotalCount is not 0)
+{
+    <nav class="pagination">
+        <div class="pagination-left">
+            <span>Showing @P.StartPosition - @P.EndPosition of @P.TotalCount</span>
+        </div>
+        <div class="pagination-right">
+            @if(P.HasPrevPage)
+            {
+                <a id="pagination-prev" role="link"><img src="~/images/icons/prev.svg" alt="Previous"></a>
+            }
+            <span>Page @Model.PageNumber</span>
+            @if(P.HasNextPage)
+            {
+                <a id="pagination-next" role="link"><img src="~/images/icons/next.svg" alt="Next"></a>
+            }
+        </div>
+    </nav>
+}
+
+@section Scripts
+{
+    <script src="~/js/Shared/table.js"></script>
+    <script src="~/js/Users/index.js"></script>
+}

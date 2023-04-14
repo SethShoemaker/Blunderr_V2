@@ -1,0 +1,28 @@
+@import '../Shared/_variables.scss';
+
+table.dashboard-table{
+    thead tr,
+    tbody tr{
+        @media (max-width:1300px) {
+            grid-template-columns: 
+                calc(2.2rem + 3vw) // id
+                calc(9.5rem + 4.5vw) // name
+                calc(9.5rem + 4.5vw) // role
+                calc(9.5rem + 4.5vw) // submitted tickets
+                calc(8rem + 4vw) // assigned tickets
+                1fr // button
+            ;
+        }
+
+        @media (min-width:1300px) {
+            grid-template-columns: 
+                7% // id
+                21% // name
+                13% // role
+                22% // submitted tickets
+                32% // assigned tickets
+                5% // button
+            ;
+        }
+    }
+}
