@@ -2,6 +2,7 @@
 @model Blunderr.Web.Pages.Users.Show
 @using Blunderr.Core.Features.Users.UserShow
 @{
+    int Id = Model.UserId;
     UserShowResponse D = Model.Data;
     UserDto U = D.User;
 
@@ -13,14 +14,14 @@
 }
 
 <div class="show-heading">
-    <h1>@ViewData["Title"]</h1>
+    <h1>User @Id</h1>
     <div class="show-heading-right">
         @if (D.CanManageUser)
         {
             <img src="~/images/icons/more.svg" alt="more" class="more-button">
             <div class="more-menu popup-inactive" id="popup-menu">
-                <a asp-page="/Users/Edit" asp-route-UserId=@Model.UserId>Edit</a>
-                <a asp-page="/Users/Delete" asp-route-UserId=@Model.UserId>Delete</a>
+                <a asp-page="/Users/Edit" asp-route-UserId=@Id>Edit</a>
+                <a asp-page="/Users/Delete" asp-route-UserId=@Id>Delete</a>
             </div>
         }
     </div>
@@ -54,13 +55,13 @@
         </div>
         <div class="item">
             <label for="user-submitted-tickets">Num. Submitted Tickets</label>
-            <a id="user-submitted-tickets" asp-page="/Tickets/Index" asp-route-SubmitterId=@Model.UserId>@U.NumSubmittedTickets submitted tickets</a>
+            <a id="user-submitted-tickets" asp-page="/Tickets/Index" asp-route-SubmitterId=@Id>@U.NumSubmittedTickets submitted tickets</a>
         </div>
         @if (U.CanBeAssignedTickets)
         {
             <div class="item">
                 <label for="user-assigned-tickets">Num. Assigned Tickets</label>
-                <a id="user-assigned-tickets" asp-page="/Tickets/Index" asp-route-DeveloperId=@Model.UserId>@U.NumAssignedTickets assigned tickets</a>
+                <a id="user-assigned-tickets" asp-page="/Tickets/Index" asp-route-DeveloperId=@Id>@U.NumAssignedTickets assigned tickets</a>
             </div>
         }
     </div>

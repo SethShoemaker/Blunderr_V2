@@ -2,11 +2,11 @@
 @model Blunderr.Web.Pages.Projects.Show
 @using Blunderr.Core.Features.Projects.ProjectShow
 @{
-    ViewData["Title"] = "Project " + Model.ProjectId;
-
     int Id = Model.ProjectId;
     ProjectShowResponse D = Model.Data;
     ProjectDto P = D.Project;
+
+    ViewData["Title"] = P.Name;
 }
 
 @section Styles{
@@ -14,7 +14,7 @@
 }
 
 <div class="show-heading">
-    <h1>@ViewData["Title"]</h1>
+    <h1>Project @Id</h1>
     <div class="show-heading-right">
         @if (D.CanManageProject)
         {
