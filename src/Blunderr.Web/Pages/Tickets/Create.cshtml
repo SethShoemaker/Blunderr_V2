@@ -1,0 +1,67 @@
+@page
+@model Blunderr.Web.Pages.Tickets.Create
+@using Blunderr.Core.Data.Entities.Tickets
+@{
+    ViewData["Title"] = "Create Ticket";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Shared/form.css">
+}
+
+<h1 class="form-heading">@ViewData["Title"]</h1>
+
+<form enctype="multipart/form-data" method="post" data-form-type="create">
+    <div class="input-container">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Enter Title" asp-for="SaveRequest.Title" required>
+    </div>
+    <div class="input-container">
+        <label for="type">Type</label>
+        <select id="type" asp-for="SaveRequest.Type" value="" required>
+            <option value="" disabled>Select Type</option>
+            <option value=@TicketType.BugIssue>Bug/Issue</option>
+            <option value=@TicketType.DocumentationRequest>Documentation Request</option>
+            <option value=@TicketType.FeatureRequest>Feature Request</option>
+            <option value=@TicketType.Other>Other</option>
+        </select>
+    </div>
+    <div class="input-container">
+        <label for="project">Project</label>
+        <select id="project" asp-for="SaveRequest.ProjectId" required>
+            <option value="" disabled>Select Project</option>
+            @foreach (var project in Model.CreateData.Projects)
+            {
+                <option value=@project.Id>@project.Name</option>
+            }
+        </select>
+    </div>
+    <div class="input-container">
+        <label for="priority">Priority</label>
+        <select id="priority" asp-for="SaveRequest.Priority" required>
+            <option value="" disabled>Select Priority</option>
+            <option value=@TicketPriority.Low>Low</option>
+            <option value=@TicketPriority.Medium>Medium</option>
+            <option value=@TicketPriority.High>High</option>
+        </select>
+    </div>
+    <div class="input-container">
+        <label for="description">Description</label>
+        <textarea id="description" asp-for="SaveRequest.Description" required></textarea>
+    </div>
+    <div class="input-container">
+        <label for="attachments">Attachments</label>
+        <div class="file-input">
+            <label for="attachments"><img src="~/images/icons/attachment.svg"> Add Attachments</label>
+            <input type="file" id="attachments" multiple asp-for="Files">
+        </div>
+    </div>
+    <div class="buttons-container">
+        <a asp-page="/Tickets/Index" class="button button-white">Cancel</a>
+        <input type="submit" value="Submit" class="button button-blue">
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/Shared/form.js"></script>
+}

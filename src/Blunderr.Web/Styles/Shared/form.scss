@@ -1,0 +1,107 @@
+@import './_variables.scss';
+
+h1.form-heading{
+    font-size: min(0.14rem + 10vw, 1.8rem + 0.24vw) !important;
+    letter-spacing: calc(0.01rem + 0.03vw) !important;
+}
+
+div#dashboard-content form{
+    div.input-container{
+        display: flex;
+        align-items: center;
+        margin-bottom: calc(2.2rem + 1.1vw);
+        
+        label{
+            width: calc(6rem + 1.5vw);
+            color: $lightGrey;
+            font-weight: 200;
+            margin-right: calc(3rem + 2.5vw);
+            font-size: calc(0.65rem + 0.31vw);
+        }
+
+        input:not([type="file"]),
+        select,
+        textarea{
+            border: calc(0.02rem) solid $darkGrey;
+            border-radius: calc(0.3rem + 0.1vw);
+            background-color: $darkNavyBlue;
+            padding-left: calc(0.6rem + 0.15vw);
+            font-size: calc(0.61rem + 0.23vw);
+            color: $offWhite;
+
+            &:focus{
+                outline: none;
+            }
+        }
+
+        input,
+        select{
+            height: calc(2.1rem + 0.67vw);
+            line-height: calc(2.1rem + 0.67vw);
+        }
+
+        input::placeholder,
+        select[placeholder="on"]{
+            color: $placeholderGrey;
+        }
+
+        input,
+        textarea{
+            width: calc(15rem + 4.5vw);
+        }
+
+        select{
+            width: calc(12rem + 3.2vw);
+        }
+
+        textarea{
+            resize: none;
+            line-height: calc(0.7rem + 0.36vw);
+            height: calc(4.5rem + 1.5vw);
+            color: $lightGrey;
+            padding: calc(0.6rem + 0.15vw);
+        }
+
+        div.file-input{
+            display: flex;
+            align-items: center;
+
+            label{
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                width: calc(12rem + 3.2vw);
+                height: calc(2.1rem + 0.67vw);
+                padding-left: calc(0.6rem + 0.15vw);
+                margin-right: calc(0.5rem + 0.7vw);
+                border: calc(0.02rem) solid $darkGrey;
+                border-radius: calc(0.3rem + 0.1vw);
+                background-color: $darkNavyBlue;
+                font-size: calc(0.61rem + 0.23vw);
+                color: $lightGrey;
+
+                img{
+                    height: min(0.2rem + 2.5vw, 0.67rem + 0.2vw);
+                    padding-right: calc(0.15rem + 0.17vw);
+                }
+            }
+
+            input[type="file"]{
+                font-weight: 300;
+                color: $offWhite;
+
+                &::file-selector-button{
+                    display: none;
+                }
+            }
+        }
+    }
+
+    div.buttons-container{
+        display: flex;
+
+        *{
+            margin-right: calc(1.25rem + 0.5vw);
+        }
+    }
+}
