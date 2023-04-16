@@ -13,7 +13,9 @@ namespace Blunderr.Core.Features.Tickets.TicketList
 
         public List<UserDto> Developers { get; set; } = null!;
 
-        public bool CanManageTickets { get; set; }
+        public Error? Error { get; set; }
+
+        public bool IsSuccessful() => Error is null;
     }
 
     public class TicketDto
@@ -45,5 +47,10 @@ namespace Blunderr.Core.Features.Tickets.TicketList
         public int Id { get; set; }
 
         public string Name { get; set; } = null!;
+    }
+
+    public enum Error
+    {
+        Forbidden
     }
 }

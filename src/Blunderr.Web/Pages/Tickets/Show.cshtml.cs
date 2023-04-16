@@ -20,13 +20,16 @@ namespace Blunderr.Web.Pages.Tickets
         [FromRoute]
         public int TicketId { get; set; }
 
-        public TicketShowResponse GetData { get; set; } = null!;
+        public TicketShowResponse Data { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            GetData = await _mediator.Send(new TicketShowRequest(User.Role(), User.Id(), TicketId));
+            Data = await _mediator.Send(new TicketShowRequest(User.Role(), User.Id(), TicketId));
 
-            return GetData.TicketExists() ? Page() : NotFound();
+            if(Data.Error == Error.Forbidden) return Forbid();
+            if(Data.Error == Error.NotFound) return NotFound();
+
+            return Page();
         }
 
         [BindProperty]
@@ -35,11 +38,11 @@ namespace Blunderr.Web.Pages.Tickets
         [BindProperty]
         public IFormFileCollection CommentAttachments { get; set; } = null!;
 
-        public TicketCommentCreateResponse PostData { get; set; } = null!;
+        public TicketCommentCreateResponse SaveResponse { get; set; } = null!;
 
         public async Task<IActionResult> OnPostAsync()
         {
-            PostData = await _mediator.Send(new TicketCommentCreateRequest(
+            SaveResponse = await _mediator.Send(new TicketCommentCreateRequest(
                 User.Role(),
                 User.Id(),
                 TicketId,
@@ -47,7 +50,10 @@ namespace Blunderr.Web.Pages.Tickets
                 CommentAttachments.Select(file => new FileItemDto(file.FileName, file.OpenReadStream()))
             ));
 
-            return PostData.isSuccessful() ? RedirectToPage("/Tickets/Show", TicketId) : BadRequest();
+            if(SaveResponse.Error == SaveError.Forbidden) return Forbid();
+            if(SaveResponse.Error == SaveError.TicketNotFound) return BadRequest();
+
+            return RedirectToPage("/Tickets/Show", TicketId);
         }
     }
 }

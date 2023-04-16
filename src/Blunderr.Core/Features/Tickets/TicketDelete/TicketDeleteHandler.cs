@@ -1,6 +1,6 @@
 using Blunderr.Core.Data.Entities.Tickets;
-using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,21 +19,14 @@ namespace Blunderr.Core.Features.Tickets.TicketDelete
         {
             TicketDeleteResponse r = new();
 
-            Ticket? ticket = await _context.Tickets
-                .Where(t => t.Id == request.TicketId)
-                .Include(t => t.Project)
-                .Include(t => t.Attachments)
-                .Include(t => t.Comments)
-                .ThenInclude(tc => tc.Attachments)
-                .FirstOrDefaultAsync();
-
-            if(ticket is null){
-                r.Error = Error.NotFound;
+            if(!TicketAccessService.CanDeleteTickets(request.deleterRole)){
+                r.Error = Error.Forbidden;
                 return r;
             }
 
-            if(request.deleterRole == UserRole.Client && ticket.Project.ClientId != request.deleterId){
-                r.Error = Error.Forbidden;
+            Ticket? ticket = await GetTicketAsync(request, cancellationToken);
+            if(ticket is null){
+                r.Error = Error.NotFound;
                 return r;
             }
 
@@ -48,6 +41,18 @@ namespace Blunderr.Core.Features.Tickets.TicketDelete
             await _context.SaveChangesAsync();
 
             return r;
+        }
+
+        private async Task<Ticket?> GetTicketAsync(TicketDeleteRequest request, CancellationToken cancellationToken)
+        {
+            return await _context.Tickets
+                .Where(t => t.Id == request.TicketId)
+                .ApplySecurityFilter(request.deleterRole, request.deleterId)
+                .Include(t => t.Project)
+                .Include(t => t.Attachments)
+                .Include(t => t.Comments)
+                .ThenInclude(tc => tc.Attachments)
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

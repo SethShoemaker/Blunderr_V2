@@ -25,9 +25,10 @@ namespace Blunderr.Web.Pages.Tickets
         {
             Data = await _mediator.Send(new TicketDeleteRequest(User.Role(), User.Id(), TicketId));
 
+            if(Data.Error == Error.Forbidden) return Forbid();
             if(Data.Error == Error.NotFound) return NotFound();
-            else if(Data.Error == Error.Forbidden) return Forbid();
-            else return RedirectToPage("/Tickets/Index");
+
+            return RedirectToPage("/Tickets/Index");
         }
     }
 }

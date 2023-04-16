@@ -4,11 +4,11 @@ namespace Blunderr.Core.Features.Tickets.TicketShow
 {
     public class TicketShowResponse
     {
-        public TicketDto? Ticket { get; set; } = null!;
+        public TicketDto Ticket { get; set; } = null!;
 
-        public bool CanViewUsers { get; set; }
+        public Error? Error { get; set; }
 
-        public bool TicketExists() => Ticket != null;
+        public bool IsSuccessful() => Error is null;
     }
 
     public class TicketDto
@@ -66,5 +66,11 @@ namespace Blunderr.Core.Features.Tickets.TicketShow
         public string Content { get; set; } = null!;
 
         public List<AttachmentDto> Attachments { get; set; } = null!;
+    }
+
+    public enum Error
+    {
+        Forbidden,
+        NotFound
     }
 }

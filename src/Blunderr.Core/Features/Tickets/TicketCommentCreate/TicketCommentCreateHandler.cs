@@ -1,7 +1,7 @@
 using Blunderr.Core.Data.Entities.FileItems;
 using Blunderr.Core.Data.Entities.Tickets;
-using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +10,7 @@ namespace Blunderr.Core.Features.Tickets.TicketCommentCreate
     public class TicketCommentCreateHandler : IRequestHandler<TicketCommentCreateRequest, TicketCommentCreateResponse>
     {
         private readonly AppDbContext _context;
+        
         public TicketCommentCreateHandler(AppDbContext context)
         {
             _context = context;
@@ -19,9 +20,16 @@ namespace Blunderr.Core.Features.Tickets.TicketCommentCreate
         {
             TicketCommentCreateResponse r = new();
 
-            Ticket? ticket = await GetTicketAsync(request, cancellationToken);
-            if(ticket is null)
+            if(!TicketAccessService.CanCreateTicketComments(request.submitterRole)){
+                r.Error = SaveError.Forbidden;
                 return r;
+            }
+
+            Ticket? ticket = await GetTicketAsync(request, cancellationToken);
+            if(ticket is null){
+                r.Error = SaveError.TicketNotFound;
+                return r;
+            }
 
             TicketComment comment = CreateComment(request, cancellationToken);
 
@@ -34,14 +42,11 @@ namespace Blunderr.Core.Features.Tickets.TicketCommentCreate
 
         private async Task<Ticket?> GetTicketAsync(TicketCommentCreateRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Ticket> ticketQuery = _context.Tickets
+            return await _context.Tickets
                 .Where(t => t.Id == request.ticketId)
-                .Include(t => t.Comments);
-
-            if(request.submitterRole == UserRole.Client)
-                ticketQuery = ticketQuery.Where(t => t.Project.ClientId == request.SubmitterId);
-
-            return await ticketQuery.FirstOrDefaultAsync(cancellationToken);
+                .ApplySecurityFilter(request.submitterRole, request.SubmitterId)
+                .Include(t => t.Comments)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         private TicketComment CreateComment(TicketCommentCreateRequest request, CancellationToken cancellationToken)
@@ -53,7 +58,8 @@ namespace Blunderr.Core.Features.Tickets.TicketCommentCreate
                 Created = DateTime.Now
             };
 
-            comment.Attachments = request.fileItemDtos.Select(fi => new TicketCommentAttachment()
+            comment.Attachments = request.fileItemDtos
+            .Select(fi => new TicketCommentAttachment()
             {
                 FileItem = new FileItem
                     {

@@ -47,7 +47,7 @@
         </div>
     </div>
     <div class="create-container">
-        @if(D.CanManageTickets)
+        @if(ViewBag.CanCreateTickets)
         {
             <a asp-page="/Tickets/Create"><span>Create Ticket</span></a>
         }
@@ -82,10 +82,16 @@
                         <img src="~/images/icons/more.svg" alt="more" class="more-button">
                         <div class="more-menu popup-inactive" id="popup-menu-@ticket.Id">
                             <a asp-page="/Tickets/Show" asp-route-TicketId=@ticket.Id>View</a>
-                            @if(D.CanManageTickets)
+                            @if(ViewBag.HasTicketManageMenu)
                             {
-                                <a asp-page="/Tickets/Edit" asp-route-TicketId=@ticket.Id>Edit</a>
-                                <a asp-page="/Tickets/Delete" asp-route-TicketId=@ticket.Id>Delete</a>
+                                @if (ViewBag.CanEditTickets)
+                                {
+                                    <a asp-page="/Tickets/Edit" asp-route-TicketId=@ticket.Id>Edit</a>
+                                }
+                                @if(ViewBag.CanDeleteTickets)
+                                {
+                                    <a asp-page="/Tickets/Delete" asp-route-TicketId=@ticket.Id>Delete</a>
+                                }
                             }
                         </div>
                     </td>

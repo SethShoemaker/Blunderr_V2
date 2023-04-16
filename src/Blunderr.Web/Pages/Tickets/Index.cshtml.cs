@@ -51,8 +51,8 @@ namespace Blunderr.Web.Pages.Tickets
                 Status
             ));
 
-            if(!Data.Page.isSuccessFull() && Data.Page.Error == Error.PageNumberOutOfRange)
-                RedirectToPage("/Tickets/Index");
+            if(Data.Error == Error.Forbidden) return Forbid();
+            if(Data.Page.Error == PageError.PageNumberOutOfRange) RedirectToPage("/Tickets/Index");
 
             return Page();
         }

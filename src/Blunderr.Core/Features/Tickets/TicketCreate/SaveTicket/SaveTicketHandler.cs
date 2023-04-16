@@ -1,8 +1,8 @@
 using Blunderr.Core.Data.Entities.FileItems;
 using Blunderr.Core.Data.Entities.Projects;
 using Blunderr.Core.Data.Entities.Tickets;
-using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,23 +21,24 @@ namespace Blunderr.Core.Features.Tickets.TicketCreate.SaveTicket
         {
             SaveTicketResponse r = new();
 
-            Project? project = await _context.Projects
-                .Where(p => p.Id == request.ProjectId)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if(project is not null && request.CreatorRole is UserRole.Client && project.ClientId != request.CreatorId){
-                r.Errors.Add(Error.Forbidden);
+            if(!TicketAccessService.CanCreateTickets(request.CreatorRole)){
+                r.Errors.Add(SaveError.Forbidden);
                 return r;
             }
 
+            Project? project = await _context.Projects
+                .Where(p => p.Id == request.ProjectId)
+                .ApplySecurityFilter(request.CreatorRole, request.CreatorId)
+                .FirstOrDefaultAsync(cancellationToken);
+
             if(project is null)
-                r.Errors.Add(Error.ProjectNotFound);
+                r.Errors.Add(SaveError.ProjectNotFound);
 
             if(request.Title is null)
-                r.Errors.Add(Error.TitleNull);
+                r.Errors.Add(SaveError.TitleNull);
 
             if(request.Description is null)
-                r.Errors.Add(Error.DescriptionNull);
+                r.Errors.Add(SaveError.DescriptionNull);
 
             if(r.Errors.Any())
                 return r;

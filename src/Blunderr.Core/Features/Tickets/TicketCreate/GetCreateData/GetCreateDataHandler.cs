@@ -1,6 +1,5 @@
-using Blunderr.Core.Data.Entities.Projects;
-using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,26 +16,27 @@ namespace Blunderr.Core.Features.Tickets.TicketCreate.Query
 
         public async Task<GetCreateDataResponse> Handle(GetCreateDataRequest request, CancellationToken cancellationToken)
         {
-            return new GetCreateDataResponse()
-            {
-                Projects = await GetProjectsAsync(request, cancellationToken)
-            };
+            GetCreateDataResponse r = new();
+
+            if(!TicketAccessService.CanCreateTickets(request.creatorRole)){
+                r.Error = Error.Forbidden;
+                return r;
+            }
+
+            r.Projects = await GetProjectsAsync(request, cancellationToken);
+            return r;
         }
 
         private async Task<List<ProjectDto>> GetProjectsAsync(GetCreateDataRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Project> projects = _context.Projects;
-
-            if(request.creatorRole is UserRole.Client)
-                projects = projects.Where(p => p.ClientId == request.creatorId);
-
-            IQueryable<ProjectDto> projectDtos = projects.Select(p => new ProjectDto()
-            {
-                Id = p.Id,
-                Name = p.Name
-            });
-
-            return await projectDtos.ToListAsync(cancellationToken);
+            return await _context.Projects
+                .ApplySecurityFilter(request.creatorRole, request.creatorId)
+                .Select(p => new ProjectDto()
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                })
+                .ToListAsync(cancellationToken);
         }
     }
 }

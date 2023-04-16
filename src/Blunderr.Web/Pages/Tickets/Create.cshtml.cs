@@ -1,11 +1,13 @@
 using Blunderr.Core.Features.Tickets.TicketCreate.Query;
 using Blunderr.Core.Features.Tickets.TicketCreate.SaveTicket;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Blunderr.Web.Pages.Tickets
 {
+    [Authorize]
     public class Create : PageModel
     {
         private readonly IMediator _mediator;
@@ -24,7 +26,7 @@ namespace Blunderr.Web.Pages.Tickets
         }
 
         [BindProperty]
-        public IFormFileCollection Files { get; set; }
+        public IFormFileCollection Files { get; set; } = null!;
 
         [BindProperty]
         public SaveTicketRequest SaveRequest { get; set; } = new();
@@ -42,8 +44,8 @@ namespace Blunderr.Web.Pages.Tickets
 
             SaveResponse = await _mediator.Send(SaveRequest);
 
-            if(SaveResponse.hasErrors())
-                return SaveResponse.Errors.Contains(Error.Forbidden) ? Forbid() : BadRequest();
+            if(SaveResponse.Errors.Contains(SaveError.Forbidden)) Forbid();
+            if(SaveResponse.Errors.Any()) return BadRequest();
 
             return RedirectToPage("/Tickets/Show", new { TicketId = SaveResponse.TicketId });
         }

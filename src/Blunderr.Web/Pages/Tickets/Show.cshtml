@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Ticket " + Model.TicketId;
 
-    TicketShowResponse D = Model.GetData;
+    TicketShowResponse D = Model.Data;
     TicketDto T = D.Ticket;
 }
 
@@ -16,10 +16,19 @@
     <h1>@ViewData["Title"]</h1>
     <div class="show-heading-right">
         <img src="~/images/icons/more.svg" alt="more" class="more-button">
-        <div class="more-menu popup-inactive" id="popup-menu">
-            <a asp-page="/Tickets/Edit" asp-route-TicketId=@Model.TicketId>Edit</a>
-            <a asp-page="/Tickets/Delete" asp-route-TicketId=@Model.TicketId>Delete</a>
-        </div>
+        @if (ViewBag.HasTicketManageMenu)
+        {
+            <div class="more-menu popup-inactive" id="popup-menu">
+                @if (ViewBag.CanEditTickets)
+                {
+                    <a asp-page="/Tickets/Edit" asp-route-TicketId=@Model.TicketId>Edit</a>
+                }
+                @if (ViewBag.CanDeleteTickets)
+                {
+                    <a asp-page="/Tickets/Delete" asp-route-TicketId=@Model.TicketId>Delete</a>
+                }
+            </div>
+        }
     </div>
 </div>
 <div class="show-body">
@@ -34,7 +43,14 @@
         </div>
         <div class="item">
             <label for="ticket-project">Project</label>
-            <a asp-page="/Projects/Show" asp-route-ProjectId=@T.Project.Id id="ticket-project">@T.Project.Name</a>
+            @if (ViewBag.CanShowProjects)
+            {
+                <a asp-page="/Projects/Show" asp-route-ProjectId=@T.Project.Id id="ticket-project">@T.Project.Name</a>
+            }
+            else
+            {
+                <span id="ticket-project">@T.Project.Name</span>
+            }
         </div>
         <div class="item">
             <label for="ticket-created">Created</label>
@@ -74,7 +90,7 @@
         </div>
         <div class="item">
             <label for="ticket-developer">Developer</label>
-            @if (T.Developer is not null && D.CanViewUsers)
+            @if (T.Developer is not null && ViewBag.CanShowUsers)
             {
                 <a id="ticket-developer" asp-page="/Users/Show" asp-route-UserId=@T.Developer.Id>@T.Developer.Name</a>
             }
@@ -85,7 +101,7 @@
         </div>
         <div class="item">
             <label for="ticket-submitter">Submitter</label>
-            @if(D.CanViewUsers)
+            @if(ViewBag.CanShowUsers)
             {
                 <a id="ticket-submitter" asp-page="/Users/Show" asp-route-UserId=@T.Submitter.Id>@T.Submitter.Name</a>
             }
@@ -104,7 +120,7 @@
                 {
                     <li class="ticket-comment">
                         <div class="head">
-                            @if (D.CanViewUsers)
+                            @if (ViewBag.CanShowUsers)
                             {
                                 <a id="name" asp-page="/Users/Show" asp-route-UserId=@c.Submitter.Id>@c.Submitter.Name</a>
                             }
@@ -122,7 +138,7 @@
                                 @if (c.Attachments.Any())
                                 {
                                     <ul class="attachment-list">
-                                @foreach (var a in c.Attachments)
+                                        @foreach (var a in c.Attachments)
                                         {
                                             <a href="@a.Location" target="_blank" role="list-item"><img src="~/images/icons/attachment.svg"> @a.FileName</a>
                                         }
@@ -146,18 +162,21 @@
                 </li>
             }
         </ul>
-        <form id="comment-form" method="POST" enctype="multipart/form-data">
-            <div class="top">
-                <input type="text" asp-for="CommentContent" placeholder="Add Comment" required>
-                <input type="submit" value="Submit" class="button button-blue">
-            </div>
-            <div class="bottom">
-                <label for="comment-attachments">
-                    <img src="~/images/icons/attachment.svg">
-                    Add Attachments
-                </label>
-                <input asp-for="CommentAttachments" multiple id="comment-attachments">
-            </div>
-        </form>
+        @if(ViewBag.CanCreateTicketComments)
+        {
+            <form id="comment-form" method="POST" enctype="multipart/form-data">
+                <div class="top">
+                    <input type="text" asp-for="CommentContent" placeholder="Add Comment" required>
+                    <input type="submit" value="Submit" class="button button-blue">
+                </div>
+                <div class="bottom">
+                    <label for="comment-attachments">
+                        <img src="~/images/icons/attachment.svg">
+                        Add Attachments
+                    </label>
+                    <input asp-for="CommentAttachments" multiple id="comment-attachments">
+                </div>
+            </form>
+        }
     </div>
 </div>

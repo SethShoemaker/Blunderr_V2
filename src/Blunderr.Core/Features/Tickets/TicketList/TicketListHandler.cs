@@ -1,7 +1,7 @@
-using Blunderr.Core.Data.Entities.Projects;
 using Blunderr.Core.Data.Entities.Tickets;
 using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using Blunderr.Core.Services.PaginationService;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,24 +19,24 @@ namespace Blunderr.Core.Features.Tickets.TicketList
 
         public async Task<TicketListResponse> Handle(TicketListRequest request, CancellationToken cancellationToken)
         {
-            return new TicketListResponse()
-            {
-                Page = await GetTicketDtosAsync(request, cancellationToken),
-                Submitters = await GetSubmitterDtosAsync(request, cancellationToken),
-                Projects = await GetProjectDtosAsync(request, cancellationToken),
-                Developers = await GetDeveloperDtosAsync(request, cancellationToken),
-                CanManageTickets = request.accessorRole != UserRole.Client
-            };
+            TicketListResponse r = new();
+
+            if(!TicketAccessService.CanListTickets(request.accessorRole)){
+                r.Error = Error.Forbidden;
+                return r;
+            }
+
+            r.Page = await GetTicketDtosAsync(request, cancellationToken);
+            r.Submitters = await GetSubmitterDtosAsync(request, cancellationToken);
+            r.Projects = await GetProjectDtosAsync(request, cancellationToken);
+            r.Developers = await GetDeveloperDtosAsync(request, cancellationToken);
+
+            return r;
         }
 
         private async Task<Page<TicketDto>> GetTicketDtosAsync(TicketListRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Ticket> tickets = _context.Tickets;
-
-            if(request.accessorRole == UserRole.Client)
-                tickets = tickets.Where(t => t.Project.ClientId == request.accessorId);
-            else if(request.accessorRole == UserRole.Developer)
-                tickets = tickets.Where(t => t.DeveloperId == request.accessorId);
+            IQueryable<Ticket> tickets = _context.Tickets.ApplySecurityFilter(request.accessorRole, request.accessorId);
 
             if(request.submitterId is not null)
                 tickets = tickets.Where(t => t.SubmitterId == request.submitterId);
@@ -50,7 +50,8 @@ namespace Blunderr.Core.Features.Tickets.TicketList
             if(request.ticketStatus is not null)
                 tickets = tickets.Where(t => t.Status == request.ticketStatus);
 
-            IQueryable<TicketDto> ticketDtos = tickets.Select(t => new TicketDto
+            return await tickets
+            .Select(t => new TicketDto
             {
                 Id = t.Id,
                 Submitter = new UserDto
@@ -71,54 +72,45 @@ namespace Blunderr.Core.Features.Tickets.TicketList
                 Priority = t.Priority,
                 Status = t.Status,
                 Created = t.Created
-            });
-
-            return await ticketDtos.PaginateAsync<TicketDto>(request.pageNumber, request.pageSize, cancellationToken);
+            })
+            .PaginateAsync<TicketDto>(request.pageNumber, request.pageSize, cancellationToken);
         }
 
         private async Task<List<UserDto>> GetSubmitterDtosAsync(TicketListRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<User> submitters = _context.Users;
-
-            if(request.accessorRole == UserRole.Client) // filter out other clients
-                submitters = submitters.Where(u => u.Role != UserRole.Client || u.Id == request.accessorId);
-
-            IQueryable<UserDto> submitterDtos = submitters.Select(s => new UserDto
-            {
-                Id = s.Id,
-                Name = s.Name
-            });
-
-            return await submitterDtos.ToListAsync();
+            return await _context.Users
+                .ApplySecurityFilter(request.accessorRole, request.accessorId)
+                .Select(s => new UserDto
+                {
+                    Id = s.Id,
+                    Name = s.Name
+                })
+                .ToListAsync(cancellationToken);
         }
 
         private async Task<List<ProjectDto>> GetProjectDtosAsync(TicketListRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Project> projects = _context.Projects;
-
-            if(request.accessorRole == UserRole.Client)
-                projects = projects.Where(p => p.ClientId == request.accessorId);
-
-            IQueryable<ProjectDto> projectDtos = projects.Select(p => new ProjectDto
-            {
-                Id = p.Id,
-                Name = p.Name
-            });
-
-            return await projectDtos.ToListAsync();
+            return await _context.Projects
+                .ApplySecurityFilter(request.accessorRole, request.accessorId)
+                .Select(p => new ProjectDto
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                })
+                .ToListAsync(cancellationToken);
         }
 
         private async Task<List<UserDto>> GetDeveloperDtosAsync(TicketListRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<User> developers = _context.Users.Where(u => u.Role != UserRole.Client);
-
-            IQueryable<UserDto> developerDtos = developers.Select(d => new UserDto
-            {
-                Id = d.Id,
-                Name = d.Name
-            });
-
-            return await developerDtos.ToListAsync();
+            return await _context.Users
+                .Where(u => u.Role != UserRole.Client)
+                .ApplySecurityFilter(request.accessorRole, request.accessorId)
+                .Select(d => new UserDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                })
+                .ToListAsync(cancellationToken);
         }
     }
 }
