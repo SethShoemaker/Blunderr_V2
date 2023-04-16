@@ -1,3 +1,25 @@
-﻿@{
+﻿@using Blunderr.Core.Data.Entities.Users
+@using Blunderr.Core.Security
+@{
     Layout = "_Layout";
+
+    UserRole userRole = User.Role();
+
+    ViewBag.CanViewProjects = ProjectAccessService.CanViewProjects(userRole);
+    ViewBag.CanCreateProjects = ProjectAccessService.CanCreateProjects(userRole);
+    ViewBag.CanDeleteProjects = ProjectAccessService.CanDeleteProjects(userRole);
+    ViewBag.CanEditProjects = ProjectAccessService.CanEditProjects(userRole);
+    ViewBag.HasProjectManageMenu = ViewBag.CanDeleteProjects || ViewBag.CanEditProjects;
+
+    ViewBag.CanViewUsers = UserAccessService.CanViewUsers(userRole);
+    ViewBag.CanCreateUsers = UserAccessService.CanCreateUsers(userRole);
+    ViewBag.CanEditUsers = UserAccessService.CanEditUsers(userRole);
+    ViewBag.CanDeleteUsers = UserAccessService.CanDeleteUsers(userRole);
+    ViewBag.HasUserManageMenu = ViewBag.CanEditUsers || ViewBag.CanDeleteUsers;
+
+    ViewBag.CanViewTickets = TicketAccessService.CanViewTickets(userRole);
+    ViewBag.CanCreateTickets = TicketAccessService.CanCreateTickets(userRole);
+    ViewBag.CanEditTickets = TicketAccessService.CanEditTickets(userRole);
+    ViewBag.CanDeleteTickets = TicketAccessService.CanDeleteTickets(userRole);
+    ViewBag.HasTicketManageMenu = ViewBag.CanEditTickets || ViewBag.CanDeleteTickets;
 }
