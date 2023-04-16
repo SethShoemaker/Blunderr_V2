@@ -12,7 +12,7 @@ namespace Blunderr.Core.Services.PaginationService
 
             int itemsSkipped = (pageNumber - 1) * pageSize;
             if (itemsSkipped >= p.TotalCount)
-                p.Error = Error.PageNumberOutOfRange;
+                p.Error = PageError.PageNumberOutOfRange;
 
             p.Items = await items
                 .Skip(itemsSkipped)

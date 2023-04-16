@@ -16,12 +16,12 @@ namespace Blunderr.Core.Services.PaginationService
 
         public int MaxPageNumber { get; set; }
 
-        public Error? Error { get; set; }
+        public PageError? Error { get; set; }
 
         public bool isSuccessFull() => Error is null;
     }
 
-    public enum Error
+    public enum PageError
     {
         PageNumberOutOfRange,
     }
