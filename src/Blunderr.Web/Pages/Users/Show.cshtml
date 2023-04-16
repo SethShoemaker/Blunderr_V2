@@ -16,12 +16,18 @@
 <div class="show-heading">
     <h1>User @Id</h1>
     <div class="show-heading-right">
-        @if (D.CanManageUser)
+        @if (ViewBag.HasUserManageMenu)
         {
             <img src="~/images/icons/more.svg" alt="more" class="more-button">
             <div class="more-menu popup-inactive" id="popup-menu">
-                <a asp-page="/Users/Edit" asp-route-UserId=@Id>Edit</a>
-                <a asp-page="/Users/Delete" asp-route-UserId=@Id>Delete</a>
+                @if(ViewBag.CanEditUsers)
+                {
+                    <a asp-page="/Users/Edit" asp-route-UserId=@Id>Edit</a>
+                }
+                @if(ViewBag.CanDeleteUsers)
+                {
+                    <a asp-page="/Users/Delete" asp-route-UserId=@Id>Delete</a>
+                }
             </div>
         }
     </div>

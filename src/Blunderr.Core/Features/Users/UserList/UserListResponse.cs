@@ -9,9 +9,7 @@ namespace Blunderr.Core.Features.Users.UserList
 
         public Error? Error { get; set; }
 
-        public bool CanManageUsers { get; set; }
-
-        public bool isSuccessful() => Error is not null;
+        public bool IsSuccessful() => Error is null;
     }
 
     public class UserDto

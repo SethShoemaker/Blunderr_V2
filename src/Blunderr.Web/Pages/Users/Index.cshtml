@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="create-container">
-        @if(D.CanManageUsers)
+        @if(ViewBag.CanCreateUsers)
         {
             <a asp-page="/Users/Create"><span>Create User</span></a>
         }
@@ -67,10 +67,16 @@
                         <img src="~/images/icons/more.svg" alt="more" class="more-button">
                         <div class="more-menu popup-inactive" id="popup-menu-@user.Id">
                             <a asp-page="/Users/Show" asp-route-UserId=@user.Id>View</a>
-                            @if(D.CanManageUsers)
+                            @if(ViewBag.HasUserManageMenu)
                             {
-                                <a asp-page="/Users/Edit" asp-route-UserId=@user.Id>Edit</a>
-                                <a asp-page="/Users/Delete" asp-route-UserId=@user.Id>Delete</a>
+                                @if(ViewBag.CanEditUsers)
+                                {
+                                    <a asp-page="/Users/Edit" asp-route-UserId=@user.Id>Edit</a>
+                                }
+                                @if(ViewBag.CanDeleteUsers)
+                                {
+                                    <a asp-page="/Users/Delete" asp-route-UserId=@user.Id>Delete</a>
+                                }
                             }
                         </div>
                     </td>

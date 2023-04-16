@@ -1,5 +1,6 @@
 using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using Blunderr.Core.Services.PhoneService;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +20,9 @@ namespace Blunderr.Core.Features.Users.UserShow
 
         public async Task<UserShowResponse> Handle(UserShowRequest request, CancellationToken cancellationToken)
         {
-            UserShowResponse r = new()
-            {
-                CanManageUser = request.accessorRole == UserRole.Manager
-            };
+            UserShowResponse r = new();
 
-            if(request.accessorRole == UserRole.Client){
+            if(!UserAccessService.CanShowUsers(request.accessorRole)){
                 r.Error = Error.Forbidden;
                 return r;
             }
@@ -42,6 +40,7 @@ namespace Blunderr.Core.Features.Users.UserShow
         {
             return await _context.Users
                 .Where(u => u.Id == request.userId)
+                .ApplySecurityFilter(request.accessorRole, request.accessorId)
                 .Select(u => new UserDto
                 {
                     Name = u.Name,

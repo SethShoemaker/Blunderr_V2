@@ -5,6 +5,7 @@ namespace Blunderr.Core.Features.Users.UserList
 {
     public record UserListRequest(
         UserRole accessorRole,
+        int accessorId,
         int pageNumber,
         int pageSize,
         UserRole? role

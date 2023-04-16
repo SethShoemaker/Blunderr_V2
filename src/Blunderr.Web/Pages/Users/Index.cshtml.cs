@@ -32,6 +32,7 @@ namespace Blunderr.Web.Pages.Users
         {
             Data = await _mediator.Send(new UserListRequest(
                 User.Role(),
+                User.Id(),
                 PageNumber,
                 PageSize,
                 Role

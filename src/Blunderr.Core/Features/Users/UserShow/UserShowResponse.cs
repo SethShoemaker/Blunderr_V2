@@ -8,8 +8,6 @@ namespace Blunderr.Core.Features.Users.UserShow
 
         public Error? Error { get; set; }
 
-        public bool CanManageUser { get; set; }
-
         public bool isSuccessful() => Error is null;
     }
 

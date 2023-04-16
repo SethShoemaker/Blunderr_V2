@@ -23,10 +23,12 @@ namespace Blunderr.Web.Pages.Users
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Data = await _mediator.Send(new UserShowRequest(User.Role(), UserId));
+            Data = await _mediator.Send(new UserShowRequest(User.Role(), User.Id(), UserId));
 
+            if(Data.Error == Error.Forbidden) return Forbid();
             if(Data.Error == Error.NotFound) return NotFound();
-            else return Page();
+            
+            return Page();
         }
     }
 }
