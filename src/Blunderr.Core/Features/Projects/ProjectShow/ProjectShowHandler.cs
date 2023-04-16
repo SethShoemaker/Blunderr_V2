@@ -1,7 +1,7 @@
 using Blunderr.Core.Data.Entities.Projects;
 using Blunderr.Core.Data.Entities.Tickets;
-using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,20 +18,25 @@ namespace Blunderr.Core.Features.Projects.ProjectShow
 
         public async Task<ProjectShowResponse> Handle(ProjectShowRequest request, CancellationToken cancellationToken)
         {
-            return new ProjectShowResponse()
-            {
-                Project = await GetProjectAsync(request, cancellationToken),
-                CanManageProject = request.accessorRole != UserRole.Developer,
-                CanViewUsers = request.accessorRole != UserRole.Client
-            };
+            ProjectShowResponse r = new();
+
+            if(!ProjectAccessService.CanViewProjects(request.accessorRole)){
+                r.Error = Error.Forbidden;
+                return r;
+            }
+
+            ProjectDto? project = await GetProjectAsync(request, cancellationToken);
+            if(project is null)
+                r.Error = Error.NotFound;
+
+            return r;
         }
 
         private async Task<ProjectDto?> GetProjectAsync(ProjectShowRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Project> project = _context.Projects.Where(p => p.Id == request.projectId);
-
-            if(request.accessorRole == UserRole.Client)
-                project = project.Where(p => p.ClientId == request.accessorId);
+            IQueryable<Project> project = _context.Projects
+                .Where(p => p.Id == request.projectId)
+                .ApplySecurityFilter(request.accessorRole, request.accessorId);
 
             IQueryable<ProjectDto> projectDto = project.Select(p => new ProjectDto()
             {

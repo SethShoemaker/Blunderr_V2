@@ -25,7 +25,9 @@ namespace Blunderr.Web.Pages.Projects
         {
             Data = await _mediator.Send(new ProjectShowRequest(User.Role(), User.Id(), ProjectId));
 
-            return Data.isSuccessful() ? Page() : NotFound();
+            if(Data.Error == Error.NotFound) return NotFound();
+            if(Data.Error == Error.Forbidden) return Forbid();
+            return Page();
         }
     }
 }

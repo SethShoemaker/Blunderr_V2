@@ -38,8 +38,9 @@ namespace Blunderr.Web.Pages.Projects
                 ClientId
             ));
 
-            if(!Data.Page.isSuccessFull() && Data.Page.Error == Error.PageNumberOutOfRange)
-                RedirectToPage("/Projects/Index");
+            if(Data.Error == Error.Forbidden) return Forbid();
+
+            if(Data.Page.Error == PageError.PageNumberOutOfRange) RedirectToPage("/Projects/Index");
 
             return Page();
         }

@@ -1,6 +1,6 @@
 using Blunderr.Core.Data.Entities.Projects;
-using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,20 +19,19 @@ namespace Blunderr.Core.Features.Projects.ProjectDelete
         {
             ProjectDeleteResponse r = new();
 
+            if(!ProjectAccessService.CanDeleteProjects(request.deleterRole)){
+                r.Error = Error.Forbidden;
+                return r;
+            }
+
             IQueryable<Project> projectQuery = _context.Projects
                 .Where(p => p.Id == request.projectId)
+                .ApplySecurityFilter(request.deleterRole, request.deleterId)
                 .Include(p => p.Tickets)
                     .ThenInclude(t => t.Attachments)
                 .Include(p => p.Tickets)
                     .ThenInclude(t => t.Comments)
                         .ThenInclude(tc => tc.Attachments);
-
-            if(request.deleterRole == UserRole.Client)
-                projectQuery = projectQuery.Where(p => p.ClientId == request.deleterId);
-            else if(request.deleterRole == UserRole.Developer){
-                r.Error = Error.Forbidden;
-                return r;
-            }
 
             Project? project = await projectQuery.FirstOrDefaultAsync();
             if(project is null){

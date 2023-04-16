@@ -1,6 +1,7 @@
 using Blunderr.Core.Data.Entities.Projects;
 using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
+using Blunderr.Core.Security;
 using Blunderr.Core.Services.PaginationService;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,21 +19,25 @@ namespace Blunderr.Core.Features.Projects.ProjectList
 
         public async Task<ProjectListResponse> Handle(ProjectListRequest request, CancellationToken cancellationToken)
         {
-            return new ProjectListResponse()
-            {
-                Page = await GetProjectsAsync(request, cancellationToken),
-                Clients = await GetClientsAsync(request, cancellationToken),
-                CanManageProjects = request.accessorRole != UserRole.Developer,
-                CanViewUsers = request.accessorRole != UserRole.Client
-            };
+            ProjectListResponse r = new();
+
+            if(!ProjectAccessService.CanViewProjects(request.accessorRole)){
+                r.Error = Error.Forbidden;
+                return r;
+            }
+
+            r.Page = await GetProjectPageAsync(request, cancellationToken);
+
+            if(UserAccessService.CanViewUsers(request.accessorRole))
+                r.Clients = await GetClientsAsync(request, cancellationToken);
+
+            return r;
         }
 
-        private async Task<Page<ProjectDto>> GetProjectsAsync(ProjectListRequest request, CancellationToken cancellationToken)
+        private async Task<Page<ProjectDto>> GetProjectPageAsync(ProjectListRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Project> projects = _context.Projects;
-
-            if(request.accessorRole == UserRole.Client)
-                projects = projects.Where(p => p.ClientId == request.accessorId);
+            IQueryable<Project> projects = _context.Projects
+                .ApplySecurityFilter(request.accessorRole, request.accessorId);
 
             if(request.clientId is not null)
                 projects = projects.Where(p => p.ClientId == request.clientId);

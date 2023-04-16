@@ -4,11 +4,9 @@ namespace Blunderr.Core.Features.Projects.ProjectShow
     {
         public ProjectDto? Project { get; set; } = null!;
 
-        public bool CanManageProject { get; set; }
+        public Error? Error { get; set; }
 
-        public bool CanViewUsers { get; set; }
-
-        public bool isSuccessful() => Project != null;
+        public bool isSuccessful() => Error is null;
     }
 
     public class ProjectDto
@@ -31,5 +29,11 @@ namespace Blunderr.Core.Features.Projects.ProjectShow
         public int Id { get; set; }
 
         public string Name { get; set; } = null!;
+    }
+
+    public enum Error
+    {
+        Forbidden,
+        NotFound
     }
 }

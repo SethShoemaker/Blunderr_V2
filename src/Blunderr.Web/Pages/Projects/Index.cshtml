@@ -3,10 +3,10 @@
 @using Blunderr.Core.Features.Projects.ProjectList
 @using Blunderr.Core.Services.PaginationService
 @{
-    ViewData["Title"] = "Projects";
-
     ProjectListResponse D = Model.Data;
     Page<ProjectDto> P = D.Page;
+
+    ViewData["Title"] = "Projects";
 }
 
 @section Styles
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="create-container">
-        @if(D.CanManageProjects)
+        @if(ViewBag.CanCreateTickets)
         {
             <a asp-page="/Projects/Create"><span>Create Ticket</span></a>
         }
@@ -58,7 +58,7 @@
                     <td>@project.Id</td>
                     <td>@project.Name</td>
                     <td class="link link-plain">
-                        @if (D.CanViewUsers)
+                        @if (ViewBag.CanViewUsers)
                         {
                             <a asp-page="/Users/Show" asp-route-UserId=@project.Client.Id>@project.Client.Name</a>
                         }
@@ -74,10 +74,16 @@
                     <td class="more-container">
                         <img src="~/images/icons/more.svg" alt="more" class="more-button">
                         <div class="more-menu popup-inactive" id="popup-menu-@project.Id">
-                            <a asp-page="/Projects/Show" asp-route-ProjectId=@project.Id>View</a>
-                            @if(D.CanManageProjects)
+                            @if(ViewBag.CanViewProjects)
+                            {
+                                <a asp-page="/Projects/Show" asp-route-ProjectId=@project.Id>View</a>
+                            }
+                            @if(ViewBag.CanEditProjects)
                             {
                                 <a asp-page="/Projects/Edit" asp-route-ProjectId=@project.Id>Edit</a>
+                            }
+                            @if(ViewBag.CanDeleteProjects)
+                            {
                                 <a asp-page="/Projects/Delete" asp-route-ProjectId=@project.Id>Delete</a>
                             }
                         </div>
