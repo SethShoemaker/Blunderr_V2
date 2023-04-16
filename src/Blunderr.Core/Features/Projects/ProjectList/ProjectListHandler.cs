@@ -21,15 +21,13 @@ namespace Blunderr.Core.Features.Projects.ProjectList
         {
             ProjectListResponse r = new();
 
-            if(!ProjectAccessService.CanViewProjects(request.accessorRole)){
+            if(!ProjectAccessService.CanListProjects(request.accessorRole)){
                 r.Error = Error.Forbidden;
                 return r;
             }
 
             r.Page = await GetProjectPageAsync(request, cancellationToken);
-
-            if(UserAccessService.CanViewUsers(request.accessorRole))
-                r.Clients = await GetClientsAsync(request, cancellationToken);
+            r.Clients = await GetClientsAsync(request, cancellationToken);
 
             return r;
         }
@@ -59,15 +57,15 @@ namespace Blunderr.Core.Features.Projects.ProjectList
 
         private async Task<List<ClientDto>> GetClientsAsync(ProjectListRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<User> clients = _context.Users.Where(u => u.Role == UserRole.Client);
-
-            IQueryable<ClientDto> clientDtos = clients.Select(c => new ClientDto
-            {
-                Id = c.Id,
-                Name = c.Name
-            });
-
-            return await clientDtos.ToListAsync();
+            return await _context.Users
+                .Where(u => u.Role == UserRole.Client)
+                .ApplySecurityFilter(request.accessorRole, request.accessorId)
+                .Select(c => new ClientDto
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync(cancellationToken);
         }
     }
 }

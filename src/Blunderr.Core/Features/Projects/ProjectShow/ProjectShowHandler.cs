@@ -1,4 +1,3 @@
-using Blunderr.Core.Data.Entities.Projects;
 using Blunderr.Core.Data.Entities.Tickets;
 using Blunderr.Core.Data.Persistence;
 using Blunderr.Core.Security;
@@ -20,7 +19,7 @@ namespace Blunderr.Core.Features.Projects.ProjectShow
         {
             ProjectShowResponse r = new();
 
-            if(!ProjectAccessService.CanViewProjects(request.accessorRole)){
+            if(!ProjectAccessService.CanShowProjects(request.accessorRole)){
                 r.Error = Error.Forbidden;
                 return r;
             }
@@ -34,25 +33,23 @@ namespace Blunderr.Core.Features.Projects.ProjectShow
 
         private async Task<ProjectDto?> GetProjectAsync(ProjectShowRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Project> project = _context.Projects
+            return await _context.Projects
                 .Where(p => p.Id == request.projectId)
-                .ApplySecurityFilter(request.accessorRole, request.accessorId);
-
-            IQueryable<ProjectDto> projectDto = project.Select(p => new ProjectDto()
-            {
-                Name = p.Name,
-                Client = new ClientDto
+                .ApplySecurityFilter(request.accessorRole, request.accessorId)
+                .Select(p => new ProjectDto()
+                {
+                    Name = p.Name,
+                    Client = new ClientDto
                     {
                         Id = p.Client.Id,
                         Name = p.Client.Name
                     },
-                Created = p.Created,
-                NumPendingTickets = p.Tickets.Where(t => t.Status == TicketStatus.Pending).Count(),
-                NumOpenTickets = p.Tickets.Where(t => t.Status == TicketStatus.Open).Count(),
-                NumResolvedTickets = p.Tickets.Where(t => t.Status == TicketStatus.Resolved).Count()
-            });
-
-            return await projectDto.FirstOrDefaultAsync(cancellationToken);
+                    Created = p.Created,
+                    NumPendingTickets = p.Tickets.Where(t => t.Status == TicketStatus.Pending).Count(),
+                    NumOpenTickets = p.Tickets.Where(t => t.Status == TicketStatus.Open).Count(),
+                    NumResolvedTickets = p.Tickets.Where(t => t.Status == TicketStatus.Resolved).Count()
+                })
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

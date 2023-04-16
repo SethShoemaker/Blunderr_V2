@@ -5,7 +5,9 @@ namespace Blunderr.Core.Security
 {
     public static class ProjectAccessService
     {
-        public static bool CanViewProjects(UserRole userRole) => true;
+        public static bool CanListProjects(UserRole userRole) => true;
+
+        public static bool CanShowProjects(UserRole userRole) => true;
 
         public static bool CanCreateProjects(UserRole userRole) => userRole == UserRole.Manager;
 

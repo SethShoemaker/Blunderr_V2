@@ -5,20 +5,24 @@
 
     UserRole userRole = User.Role();
 
-    ViewBag.CanViewProjects = ProjectAccessService.CanViewProjects(userRole);
+    ViewBag.CanListProjects = ProjectAccessService.CanListProjects(userRole);
+    ViewBag.CanShowProjects = ProjectAccessService.CanShowProjects(userRole);
     ViewBag.CanCreateProjects = ProjectAccessService.CanCreateProjects(userRole);
     ViewBag.CanDeleteProjects = ProjectAccessService.CanDeleteProjects(userRole);
     ViewBag.CanEditProjects = ProjectAccessService.CanEditProjects(userRole);
     ViewBag.HasProjectManageMenu = ViewBag.CanDeleteProjects || ViewBag.CanEditProjects;
 
-    ViewBag.CanViewUsers = UserAccessService.CanViewUsers(userRole);
+    ViewBag.CanListUsers = UserAccessService.CanListUsers(userRole);
+    ViewBag.CanShowUsers = UserAccessService.CanShowUsers(userRole);
     ViewBag.CanCreateUsers = UserAccessService.CanCreateUsers(userRole);
     ViewBag.CanEditUsers = UserAccessService.CanEditUsers(userRole);
     ViewBag.CanDeleteUsers = UserAccessService.CanDeleteUsers(userRole);
     ViewBag.HasUserManageMenu = ViewBag.CanEditUsers || ViewBag.CanDeleteUsers;
 
-    ViewBag.CanViewTickets = TicketAccessService.CanViewTickets(userRole);
+    ViewBag.CanListTickets = TicketAccessService.CanListTickets(userRole);
+    ViewBag.CanShowTickets = TicketAccessService.CanShowTickets(userRole);
     ViewBag.CanCreateTickets = TicketAccessService.CanCreateTickets(userRole);
+    ViewBag.CanCreateTicketComments = TicketAccessService.CanCreateTicketComments(userRole);
     ViewBag.CanEditTickets = TicketAccessService.CanEditTickets(userRole);
     ViewBag.CanDeleteTickets = TicketAccessService.CanDeleteTickets(userRole);
     ViewBag.HasTicketManageMenu = ViewBag.CanEditTickets || ViewBag.CanDeleteTickets;

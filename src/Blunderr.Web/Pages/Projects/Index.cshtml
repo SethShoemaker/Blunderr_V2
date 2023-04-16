@@ -58,7 +58,7 @@
                     <td>@project.Id</td>
                     <td>@project.Name</td>
                     <td class="link link-plain">
-                        @if (ViewBag.CanViewUsers)
+                        @if (ViewBag.CanShowUsers)
                         {
                             <a asp-page="/Users/Show" asp-route-UserId=@project.Client.Id>@project.Client.Name</a>
                         }
@@ -74,7 +74,7 @@
                     <td class="more-container">
                         <img src="~/images/icons/more.svg" alt="more" class="more-button">
                         <div class="more-menu popup-inactive" id="popup-menu-@project.Id">
-                            @if(ViewBag.CanViewProjects)
+                            @if(ViewBag.CanShowProjects)
                             {
                                 <a asp-page="/Projects/Show" asp-route-ProjectId=@project.Id>View</a>
                             }
