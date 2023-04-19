@@ -1,0 +1,47 @@
+@page
+@model Blunderr.Web.Pages.Users.Create
+@using Blunderr.Core.Data.Entities.Users
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Shared/form.css">
+}
+
+<h1 class="form-heading">@ViewData["Title"]</h1>
+
+<form method="post" data-form-type="create">
+    <div class="input-container">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter Name" asp-for="CreateRequest.Name" required>
+    </div>
+    <div class="input-container">
+        <label for="client">Client</label>
+        <select asp-for="CreateRequest.Role" id="client" value="" required>
+            <option value="" disabled>Select Role</option>
+            <option value="@UserRole.Client">Client</option>
+            <option value="@UserRole.Developer">Developer</option>
+        </select>
+    </div>
+    <div class="input-container">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter Email" asp-for="CreateRequest.Email" required>
+    </div>
+    <div class="input-container">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" placeholder="Enter Phone" asp-for="CreateRequest.Phone">
+    </div>
+    <div class="input-container">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter Password" asp-for="CreateRequest.Password" required>
+    </div>
+    <div class="buttons-container">
+        <a asp-page="/Projects/Index" class="button button-white">Cancel</a>
+        <input type="submit" value="Save" class="button button-blue">
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/Shared/form.js"></script>
+}
