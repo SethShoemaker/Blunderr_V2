@@ -1,0 +1,36 @@
+@page
+@model Blunderr.Web.Pages.Projects.Create
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Shared/form.css">
+}
+
+<h1 class="form-heading">@ViewData["Title"]</h1>
+
+<form method="post" data-form-type="create">
+    <div class="input-container">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter Name" asp-for="SaveRequest.ProjectName" required>
+    </div>
+    <div class="input-container">
+        <label for="client">Client</label>
+        <select asp-for="SaveRequest.ClientId" id="client" value="" required>
+            <option value="" disabled>Select Client</option>
+            @foreach (var client in Model.Clients)
+            {
+                <option value="@client.Id">@client.Name</option>
+            }
+        </select>
+    </div>
+    <div class="buttons-container">
+        <a asp-page="/Projects/Index" class="button button-white">Cancel</a>
+        <input type="submit" value="Save" class="button button-blue">
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/Shared/form.js"></script>
+}
