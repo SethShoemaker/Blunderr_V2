@@ -73,7 +73,7 @@
                 <ul id="ticket-attachments" class="attachment-list">
                     @foreach (var a in T.Attachments)
                     {
-                        <a href="@a.Location" target="_blank" role="listitem"><img src="~/images/icons/attachment.svg"> @a.Location</a>
+                        <a href="@a.Location" target="_blank" role="listitem"><img src="~/images/icons/attachment.svg"> @a.FileName</a>
                     }
                 </ul>
             }
