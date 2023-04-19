@@ -32,7 +32,6 @@ div.show-body div.row{
     padding-left: calc(0.25rem + 3vw);
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     color: $lightGrey;
 
     label{
@@ -48,9 +47,10 @@ div.show-body div.row{
 
         span,a{
             text-decoration: none;
-            font-weight: 200;
+            font-weight: 100;
             color: inherit;
             font-size: min(0.25rem + 3vw, 0.85rem + 0.2vw);
+            line-height: calc(1.15rem + 0.5vw);
         }
 
         a{
