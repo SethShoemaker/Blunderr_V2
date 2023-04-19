@@ -11,10 +11,11 @@ div#dashboard-content form{
     div.input-container{
         margin-bottom: calc(2.2rem + 1.1vw);
 
-        label{
+        > label{
             color: $lightGrey;
             font-weight: 200;
             font-size: calc(0.65rem + 0.31vw);
+            padding-top:calc(0.7rem + 0.33vw);
         }
 
         input:not([type="file"]),
@@ -88,7 +89,6 @@ div#dashboard-content form{
 
             &{
                 display: flex;
-                align-items: center;
             }
             
             label{
