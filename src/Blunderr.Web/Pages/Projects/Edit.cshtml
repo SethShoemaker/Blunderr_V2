@@ -1,0 +1,26 @@
+@page "{ProjectId:int}"
+@model Blunderr.Web.Pages.Projects.Edit
+@{
+    ViewData["Title"] = "Edit Project " + Model.ProjectId;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Shared/form.css">
+}
+
+<h1 class="form-heading">@ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="input-container">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter Name" asp-for="SaveRequest.Name" required>
+    </div>
+    <div class="buttons-container">
+        <a asp-page="/Projects/Show" asp-route-ProjectId=@Model.ProjectId class="button button-white">Cancel</a>
+        <input type="submit" value="Save" class="button button-blue">
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/Shared/form.js"></script>
+}
