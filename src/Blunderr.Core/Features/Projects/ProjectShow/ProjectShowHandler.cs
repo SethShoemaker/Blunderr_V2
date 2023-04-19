@@ -28,6 +28,8 @@ namespace Blunderr.Core.Features.Projects.ProjectShow
             if(project is null)
                 r.Error = Error.NotFound;
 
+            r.Project = project;
+
             return r;
         }
 
