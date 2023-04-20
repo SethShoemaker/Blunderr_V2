@@ -1,12 +1,27 @@
 @page "{ProjectId:int}"
 @model Blunderr.Web.Pages.Projects.Show
 @using Blunderr.Core.Features.Projects.ProjectShow
+@using Blunderr.Core.Data.Entities.Users
+@using Blunderr.Core.Security
 @{
     int Id = Model.ProjectId;
     ProjectShowResponse D = Model.Data;
     ProjectDto P = D.Project;
 
     ViewData["Title"] = P.Name;
+
+    UserRole userRole = User.Role();
+
+    ViewBag.CanListProjects = ProjectAccessService.CanListProjects(userRole);
+    ViewBag.CanShowProjects = ProjectAccessService.CanShowProjects(userRole);
+    ViewBag.CanCreateProjects = ProjectAccessService.CanCreateProjects(userRole);
+    ViewBag.CanDeleteProjects = ProjectAccessService.CanDeleteProjects(userRole);
+    ViewBag.CanEditProjects = ProjectAccessService.CanEditProjects(userRole);
+    ViewBag.HasProjectManageMenu = ViewBag.CanDeleteProjects || ViewBag.CanEditProjects;
+
+    ViewBag.CanShowUsers = UserAccessService.CanShowUsers(userRole);
+
+    ViewBag.CanListTickets = TicketAccessService.CanListTickets(userRole);
 }
 
 @section Styles{

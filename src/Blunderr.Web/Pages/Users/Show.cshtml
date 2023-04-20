@@ -1,12 +1,23 @@
 @page "{UserId:int}"
 @model Blunderr.Web.Pages.Users.Show
 @using Blunderr.Core.Features.Users.UserShow
+@using Blunderr.Core.Data.Entities.Users
+@using Blunderr.Core.Security
 @{
     int Id = Model.UserId;
     UserShowResponse D = Model.Data;
     UserDto U = D.User;
 
     ViewData["Title"] = U.Name;
+
+    UserRole userRole = User.Role();
+
+    ViewBag.CanListUsers = UserAccessService.CanListUsers(userRole);
+    ViewBag.CanShowUsers = UserAccessService.CanShowUsers(userRole);
+    ViewBag.CanCreateUsers = UserAccessService.CanCreateUsers(userRole);
+    ViewBag.CanEditUsers = UserAccessService.CanEditUsers(userRole);
+    ViewBag.CanDeleteUsers = UserAccessService.CanDeleteUsers(userRole);
+    ViewBag.HasUserManageMenu = ViewBag.CanEditUsers || ViewBag.CanDeleteUsers;
 }
 
 @section Styles{

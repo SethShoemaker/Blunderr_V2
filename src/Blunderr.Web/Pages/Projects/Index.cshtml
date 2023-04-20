@@ -2,11 +2,24 @@
 @model Blunderr.Web.Pages.Projects.Index
 @using Blunderr.Core.Features.Projects.ProjectList
 @using Blunderr.Core.Services.PaginationService
+@using Blunderr.Core.Data.Entities.Users
+@using Blunderr.Core.Security
 @{
     ProjectListResponse D = Model.Data;
     Page<ProjectDto> P = D.Page;
 
     ViewData["Title"] = "Projects";
+
+    UserRole userRole = User.Role();
+
+    ViewBag.CanListProjects = ProjectAccessService.CanListProjects(userRole);
+    ViewBag.CanShowProjects = ProjectAccessService.CanShowProjects(userRole);
+    ViewBag.CanCreateProjects = ProjectAccessService.CanCreateProjects(userRole);
+    ViewBag.CanDeleteProjects = ProjectAccessService.CanDeleteProjects(userRole);
+    ViewBag.CanEditProjects = ProjectAccessService.CanEditProjects(userRole);
+    ViewBag.HasProjectManageMenu = ViewBag.CanDeleteProjects || ViewBag.CanEditProjects;
+
+    ViewBag.CanShowUsers = UserAccessService.CanShowUsers(userRole);
 }
 
 @section Styles
@@ -30,9 +43,9 @@
         </div>
     </div>
     <div class="create-container">
-        @if(ViewBag.CanCreateTickets)
+        @if(ViewBag.CanCreateProjects)
         {
-            <a asp-page="/Projects/Create"><span>Create Ticket</span></a>
+            <a asp-page="/Projects/Create"><span>Create Project</span></a>
         }
     </div>
 </div>

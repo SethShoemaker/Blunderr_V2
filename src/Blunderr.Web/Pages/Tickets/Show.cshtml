@@ -1,11 +1,27 @@
 @page "{TicketId:int}"
 @using Blunderr.Core.Features.Tickets.TicketShow
 @model Blunderr.Web.Pages.Tickets.Show
+@using Blunderr.Core.Data.Entities.Users
+@using Blunderr.Core.Security
 @{
     ViewData["Title"] = "Ticket " + Model.TicketId;
 
     TicketShowResponse D = Model.Data;
     TicketDto T = D.Ticket;
+
+    UserRole userRole = User.Role();
+
+    ViewBag.CanListTickets = TicketAccessService.CanListTickets(userRole);
+    ViewBag.CanShowTickets = TicketAccessService.CanShowTickets(userRole);
+    ViewBag.CanCreateTickets = TicketAccessService.CanCreateTickets(userRole);
+    ViewBag.CanCreateTicketComments = TicketAccessService.CanCreateTicketComments(userRole);
+    ViewBag.CanEditTickets = TicketAccessService.CanEditTickets(userRole);
+    ViewBag.CanDeleteTickets = TicketAccessService.CanDeleteTickets(userRole);
+    ViewBag.HasTicketManageMenu = ViewBag.CanEditTickets || ViewBag.CanDeleteTickets;
+
+    ViewBag.CanShowProjects = ProjectAccessService.CanShowProjects(userRole);
+
+    ViewBag.CanShowUsers = UserAccessService.CanShowUsers(userRole);
 }
 
 @section Styles{

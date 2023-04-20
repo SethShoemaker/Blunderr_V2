@@ -1,10 +1,22 @@
 @page
-@using Blunderr.Core.Features.Tickets.TicketList
 @model Blunderr.Web.Pages.Tickets.Index
+@using Blunderr.Core.Features.Tickets.TicketList
+@using Blunderr.Core.Data.Entities.Users
+@using Blunderr.Core.Security
 @{
     ViewData["Title"] = "Tickets";
 
     TicketListResponse D = Model.Data;
+
+    UserRole userRole = User.Role();
+
+    ViewBag.CanListTickets = TicketAccessService.CanListTickets(userRole);
+    ViewBag.CanShowTickets = TicketAccessService.CanShowTickets(userRole);
+    ViewBag.CanCreateTickets = TicketAccessService.CanCreateTickets(userRole);
+    ViewBag.CanCreateTicketComments = TicketAccessService.CanCreateTicketComments(userRole);
+    ViewBag.CanEditTickets = TicketAccessService.CanEditTickets(userRole);
+    ViewBag.CanDeleteTickets = TicketAccessService.CanDeleteTickets(userRole);
+    ViewBag.HasTicketManageMenu = ViewBag.CanEditTickets || ViewBag.CanDeleteTickets;
 }
 
 @section Styles

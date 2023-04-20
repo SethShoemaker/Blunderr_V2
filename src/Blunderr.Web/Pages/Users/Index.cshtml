@@ -2,11 +2,22 @@
 @model Blunderr.Web.Pages.Users.Index
 @using Blunderr.Core.Features.Users.UserList
 @using Blunderr.Core.Services.PaginationService
+@using Blunderr.Core.Data.Entities.Users
+@using Blunderr.Core.Security
 @{
     ViewData["Title"] = "Users";
 
     UserListResponse D = Model.Data;
     Page<UserDto> P = D.Page;
+
+    UserRole userRole = User.Role();
+
+    ViewBag.CanListUsers = UserAccessService.CanListUsers(userRole);
+    ViewBag.CanShowUsers = UserAccessService.CanShowUsers(userRole);
+    ViewBag.CanCreateUsers = UserAccessService.CanCreateUsers(userRole);
+    ViewBag.CanEditUsers = UserAccessService.CanEditUsers(userRole);
+    ViewBag.CanDeleteUsers = UserAccessService.CanDeleteUsers(userRole);
+    ViewBag.HasUserManageMenu = ViewBag.CanEditUsers || ViewBag.CanDeleteUsers;
 }
 
 <h1>@ViewData["Title"]</h1>
