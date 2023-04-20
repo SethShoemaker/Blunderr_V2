@@ -1,0 +1,38 @@
+@page "{UserId:int}"
+@model Blunderr.Web.Pages.Users.Edit
+@{
+    ViewData["Title"] = "Edit User " + Model.UserId;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Shared/form.css">
+}
+
+<h1 class="form-heading">@ViewData["Title"]</h1>
+
+<form method="post" data-form-type="create">
+    <div class="input-container">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter New Name" asp-for="SaveRequest.Name" required>
+    </div>
+    <div class="input-container">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter New Email" asp-for="SaveRequest.Email" required>
+    </div>
+    <div class="input-container">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" placeholder="Enter New Phone" asp-for="SaveRequest.Phone">
+    </div>
+    <div class="input-container">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter New Password" asp-for="SaveRequest.Password" required>
+    </div>
+    <div class="buttons-container">
+        <a asp-page="/Users/Show" asp-route-UserId=@Model.UserId class="button button-white">Cancel</a>
+        <input type="submit" value="Save" class="button button-blue">
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/Shared/form.js"></script>
+}
