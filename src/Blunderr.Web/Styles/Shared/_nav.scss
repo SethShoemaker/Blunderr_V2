@@ -117,3 +117,24 @@ nav#nav{
         }
     }
 }
+
+div#header-dropdown{
+    position: fixed;
+    top: calc(3.5rem + 1.25vw);
+    right: calc(1rem + 1vw);
+    background-color: $darkNavyBlue;
+    border: calc(0.02rem) solid $mediumGrey;
+    border-radius: calc(0.3rem + 0.12vw);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a{
+        text-align: center;
+        color: $offWhite;
+        text-decoration: none;
+        font-weight: 500;
+        width: calc(6.5rem + 1.25vw);
+        padding: calc(0.7rem + 0.07vw) 0;
+    }
+}

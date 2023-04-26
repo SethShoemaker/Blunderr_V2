@@ -29,3 +29,9 @@ for (let i = 0; i < SIDEBAR_TABS_LIST.length; i++) {
     if (tabRootPath == CURRENT_ROOT_PATH)
         tab.classList.add("current");
 }
+
+const DROPDOWN_TOGGLER = document.querySelector("nav#nav header div#right button#header-dropdown-toggler");
+const DROPDOWN_ID = "header-dropdown";
+DROPDOWN_TOGGLER.addEventListener("click", () => {
+    togglePopup(DROPDOWN_ID, true);
+});

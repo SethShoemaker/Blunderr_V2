@@ -12,7 +12,7 @@
             <img src="~/images/Logo-White.svg" id="logo" draggable="false">
         </div>
         <div id="right">
-            <button aria-label="logout">
+            <button aria-label="logout" id="header-dropdown-toggler">
                 @User.Name()
                 <img src="~/images/icons/dropdown.svg" alt draggable="false">
             </button>
@@ -50,3 +50,6 @@
         </ul>
     </div>
 </nav>
+<div id="header-dropdown" class="popup popup-inactive">
+    <a asp-page="/Logout">Logout</a>
+</div>
