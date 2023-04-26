@@ -84,7 +84,7 @@
                                 {
                                     <a asp-page="/Users/Edit" asp-route-UserId=@user.Id>Edit</a>
                                 }
-                                @if(ViewBag.CanDeleteUsers)
+                                @if(ViewBag.CanDeleteUsers && user.Role != UserRole.Manager)
                                 {
                                     <a asp-page="/Users/Delete" asp-route-UserId=@user.Id>Delete</a>
                                 }
