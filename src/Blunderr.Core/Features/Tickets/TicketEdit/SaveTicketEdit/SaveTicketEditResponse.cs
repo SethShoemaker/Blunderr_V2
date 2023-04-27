@@ -9,6 +9,7 @@ namespace Blunderr.Core.Features.Tickets.TicketEdit.SaveTicketEdit
     {
         Forbidden,
         NotFound,
-        RemovedAttachmentNotFound
+        RemovedAttachmentNotFound,
+        DeveloperNotFound
     }
 }

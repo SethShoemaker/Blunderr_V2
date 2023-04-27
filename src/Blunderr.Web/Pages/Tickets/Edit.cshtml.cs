@@ -22,6 +22,8 @@ namespace Blunderr.Web.Pages.Tickets
 
         public GetEditDataResponse EditDataResponse { get; set; } = null!;
 
+        public List<DeveloperDto> Developers { get; set; } = null!;
+
         [BindProperty]
         public SaveTicketEditRequest SaveRequest { get; set; } = null!;
 
@@ -33,6 +35,7 @@ namespace Blunderr.Web.Pages.Tickets
             if(EditDataResponse.Error == Error.NotFound) return NotFound();
 
             SaveRequest = EditDataResponse.SaveRequest;
+            Developers = EditDataResponse.Developers;
 
             return Page();
         }
@@ -53,6 +56,7 @@ namespace Blunderr.Web.Pages.Tickets
             if(SaveResponse.Error == SaveError.Forbidden) return Forbid();
             if(SaveResponse.Error == SaveError.NotFound) return NotFound();
             if(SaveResponse.Error == SaveError.RemovedAttachmentNotFound) return BadRequest();
+            if(SaveResponse.Error == SaveError.DeveloperNotFound) return BadRequest();
 
             return RedirectToPage("/Tickets/Show", new { TicketId = TicketId });
         }

@@ -14,6 +14,8 @@ namespace Blunderr.Core.Features.Tickets.TicketEdit.SaveTicketEdit
 
         public string Title { get; set; } = null!;
 
+        public int? DeveloperId { get; set; }
+
         public TicketType Type { get; set; }
 
         public TicketPriority Priority { get; set; }

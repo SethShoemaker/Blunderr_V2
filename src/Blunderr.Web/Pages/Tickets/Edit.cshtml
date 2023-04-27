@@ -27,6 +27,16 @@
         </select>
     </div>
     <div class="input-container">
+        <label for="dev">Developer</label>
+        <select id="dev" asp-for="SaveRequest.DeveloperId">
+            <option value="">None</option>
+            @foreach (var developer in Model.Developers)
+            {
+                <option value=@developer.Id>@developer.Name</option>
+            }
+        </select>
+    </div>
+    <div class="input-container">
         <label for="priority">Priority</label>
         <select id="priority" asp-for="SaveRequest.Priority" required>
             <option value="" disabled>Select Priority</option>

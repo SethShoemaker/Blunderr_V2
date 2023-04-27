@@ -1,3 +1,4 @@
+using Blunderr.Core.Data.Entities.Users;
 using Blunderr.Core.Data.Persistence;
 using Blunderr.Core.Features.Tickets.TicketEdit.SaveTicketEdit;
 using Blunderr.Core.Security;
@@ -31,6 +32,7 @@ namespace Blunderr.Core.Features.Tickets.TicketEdit.GetEditData
             }
 
             r.SaveRequest = saveRequest;
+            r.Developers = await GetDevelopersAsync(request, cancellationToken);
 
             return r;
         }
@@ -45,8 +47,22 @@ namespace Blunderr.Core.Features.Tickets.TicketEdit.GetEditData
                     Title = t.Title,
                     Type = t.Type,
                     Priority = t.Priority,
-                    Description = t.Description
+                    Description = t.Description,
+                    DeveloperId = t.DeveloperId
                 }).FirstOrDefaultAsync(cancellationToken);
+        }
+
+        private async Task<List<DeveloperDto>> GetDevelopersAsync(GetEditDataRequest request, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .Where(u => u.Role != UserRole.Client)
+                .ApplySecurityFilter(request.editorRole, request.editorId)
+                .Select(u => new DeveloperDto
+                {
+                    Id = u.Id,
+                    Name = u.Name
+                })
+                .ToListAsync(cancellationToken);
         }
     }
 }
